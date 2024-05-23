@@ -24,6 +24,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   password,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   return (
     <View style={styles.inputContainer}>
@@ -47,16 +48,24 @@ const CustomInput: React.FC<CustomInputProps> = ({
             )}
           />
         }
-        right={password && <TextInput.Icon icon="eye" />}
-        secureTextEntry={secureTextEntry}
+        right={
+          password && (
+            <TextInput.Icon
+              icon={passwordVisible ? 'eye-off' : 'eye'}
+              onPress={() => setPasswordVisible(!passwordVisible)}
+            />
+          )
+        }
+        secureTextEntry={password ? !passwordVisible : secureTextEntry}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         theme={{
           colors: {
             text: globalStyles.textColor.color,
             placeholder: globalStyles.placeholderColor.color,
-            primary: isFocused ? 'orange' : globalStyles.borderColor.color, // Cambia el color del borde
+            primary: isFocused ? 'orange' : globalStyles.borderColor.color,
           },
+          roundness: 12,
         }}
       />
     </View>

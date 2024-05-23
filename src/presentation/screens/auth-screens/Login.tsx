@@ -9,15 +9,23 @@ import {
   globalStyles,
 } from '../../theme/authGlobalStyles';
 import RememberMeView from '../../components/RemembermeView';
+import {RootNavigationProp} from '../../../types/navigationTypes';
 
-const LoginScreen: React.FC = () => {
+type Props = {
+  navigation: RootNavigationProp;
+};
+
+const LoginScreen: React.FC<Props> = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    console.log('Logging in with', email, password);
+    navigation.navigate('Home');
   };
 
+  const handleGoToHome = () => {
+    navigation.navigate('Home');
+  };
   return (
     <View style={globalStyles.containerInput}>
       <View
@@ -27,7 +35,7 @@ const LoginScreen: React.FC = () => {
           justifyContent: 'center',
         }}>
         <View style={{flex: 2, marginTop: 60}}></View>
-        <TouchableOpacity style={globalStyles.btnBack}>
+        <TouchableOpacity style={globalStyles.btnBack} onPress={handleGoToHome}>
           <Icon
             style={[{color: colors.primary}]}
             name="arrow-left-top"
@@ -65,7 +73,7 @@ const LoginScreen: React.FC = () => {
           placeholder="Enter your password"
           value={password}
           onChangeText={text => setPassword(text)}
-          secureTextEntry
+          secureTextEntry={true}
           icon="lock"
           password
         />
@@ -99,5 +107,3 @@ const LoginScreen: React.FC = () => {
 };
 
 export default LoginScreen;
-
-// onPress={() => navigation.navigate('RegisterScreen')}

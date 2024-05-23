@@ -17,6 +17,10 @@ export const Home: React.FC<Props> = ({navigation}) => {
   const handleLogin = () => {
     navigation.navigate('Login');
   };
+
+  const handleCreateAccount = () => {
+    navigation.navigate('CreateAccount');
+  };
   return (
     <View style={[authGlobalStyles.container, {width: width}]}>
       <View style={authGlobalStyles.topContent}>
@@ -66,7 +70,7 @@ export const Home: React.FC<Props> = ({navigation}) => {
           </Button>
           <Button
             icon={'account-plus'}
-            // onPress={handleCreateAccount}
+            onPress={handleCreateAccount}
             mode="outlined"
             labelStyle={{color: colors.tertiary}}
             style={[
