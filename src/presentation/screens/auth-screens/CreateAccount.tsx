@@ -16,7 +16,7 @@ type Props = {
 };
 export const CreateAccount: React.FC<Props> = ({navigation}) => {
   const handleGoToHome = () => {
-    navigation.navigate('Home');
+    navigation.navigate('OTPVerification');
   };
 
   const [name, setName] = useState('');
@@ -28,8 +28,21 @@ export const CreateAccount: React.FC<Props> = ({navigation}) => {
       <View style={createAccountStyles.container}>
         <View style={createAccountStyles.iconContainer}>
           <TouchableOpacity
-            style={globalStyles.btnBack}
-            onPress={handleGoToHome}>
+            style={{
+              flex: 1,
+              position: 'absolute',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 50,
+              width: 50,
+              height: 50,
+              borderColor: '#eee',
+              borderWidth: 1,
+              borderRadius: 10,
+              top: 0,
+              left: 0,
+            }}
+            onPress={() => navigation.navigate('Home')}>
             <Icon
               style={[{color: colors.primary}]}
               name="arrow-left-top"
@@ -42,7 +55,7 @@ export const CreateAccount: React.FC<Props> = ({navigation}) => {
             Crear Cuenta de{' '}
             <Text style={{color: colors.secondary}}>Mushi Mushi</Text>
           </Text>
-          <Text variant="bodyMedium" style={{color: '#B0B5B3'}}>
+          <Text variant="bodyMedium" style={{color: '#4A4A4A'}}>
             Por favor, complete los campos de abajo
           </Text>
         </View>
@@ -84,10 +97,8 @@ export const CreateAccount: React.FC<Props> = ({navigation}) => {
           <Button
             mode="contained"
             onPress={handleGoToHome}
-            style={[
-              authGlobalStyles.btnStyles,
-              {backgroundColor: colors.tertiary},
-            ]}>
+            icon={'account-plus'}
+            style={[{backgroundColor: colors.tertiary, paddingVertical: 4}]}>
             Crear Cuenta
           </Button>
         </View>

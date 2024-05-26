@@ -9,6 +9,7 @@ export const colors = {
   warning: '#FFFF00',
   primaryShade: '#f4d4b4',
   primaryLight: '#f8ceb1',
+  subTextColor: '#4A4A4A',
   whiteColor: '#faf9f9',
 };
 
@@ -70,10 +71,17 @@ export const authGlobalStyles = StyleSheet.create({
 });
 
 export const globalStyles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    paddingHorizontal: 32,
+    justifyContent: 'flex-start',
+  },
   containerInput: {
     flex: 1,
     justifyContent: 'center',
-    paddingHorizontal: 28,
+    paddingHorizontal: 32,
     backgroundColor: '#fff',
     rowGap: 28,
   },
@@ -111,7 +119,7 @@ export const globalStyles = StyleSheet.create({
     rowGap: 20,
   },
   subText: {
-    color: colors.primaryLight,
+    color: colors.subTextColor,
   },
   btnBack: {
     alignItems: 'center',
@@ -133,16 +141,17 @@ export const createAccountStyles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
-    paddingHorizontal: 24,
+    paddingHorizontal: 32,
     justifyContent: 'flex-start',
   },
   iconContainer: {
     flex: 2,
+    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
     width: '100%',
     height: '100%',
     // backgroundColor: 'green',
+    position: 'relative',
   },
   titleSection: {
     flex: 1,

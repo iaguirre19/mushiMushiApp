@@ -45,7 +45,11 @@ export const Home: React.FC<Props> = ({navigation}) => {
           </Text>
           <Text
             variant="bodyLarge"
-            style={{width: '100%', textAlign: 'center', color: '#999'}}>
+            style={{
+              width: '100%',
+              textAlign: 'center',
+              color: colors.subTextColor,
+            }}>
             Comparte tus creaciones, descubre nuevas ideas y conectate con
             personas apasionadas por el arte de tejer
           </Text>
@@ -73,10 +77,7 @@ export const Home: React.FC<Props> = ({navigation}) => {
             onPress={handleCreateAccount}
             mode="outlined"
             labelStyle={{color: colors.tertiary}}
-            style={[
-              authGlobalStyles.btnStyles,
-              {borderColor: colors.tertiary},
-            ]}>
+            style={[{borderColor: colors.tertiary, paddingVertical: 4}]}>
             Crear cuenta
           </Button>
         </View>

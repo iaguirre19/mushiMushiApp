@@ -2,7 +2,11 @@ import React, {useState} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Checkbox, Text, useTheme} from 'react-native-paper';
 
-const RememberMeView = () => {
+type Props = {
+  onPress: () => void;
+};
+
+const RememberMeView = ({onPress}: Props) => {
   const [checked, setChecked] = useState(false);
   const {colors} = useTheme();
 
@@ -17,8 +21,7 @@ const RememberMeView = () => {
         />
         <Text style={styles.label}>Recuérdame</Text>
       </View>
-      <TouchableOpacity
-        onPress={() => console.log('Navigate to forgot password screen')}>
+      <TouchableOpacity onPress={onPress}>
         <Text style={[styles.forgotPassword, {color: colors.primary}]}>
           Olvidé mi contraseña
         </Text>
@@ -32,7 +35,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    // padding: 10,
   },
   checkboxContainer: {
     flexDirection: 'row',

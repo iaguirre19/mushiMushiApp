@@ -5,6 +5,8 @@ import {RootStackParamList} from '../types/navigationTypes';
 import {Home} from '../presentation/screens/auth-screens/Home';
 import LoginScreen from '../presentation/screens/auth-screens/Login';
 import {CreateAccount} from '../presentation/screens/auth-screens/CreateAccount';
+import ForgotPassword from '../presentation/screens/auth-screens/ForgotPassword';
+import OtpVerification from '../presentation/screens/auth-screens/OTPVerification';
 const Stack = createStackNavigator<RootStackParamList>();
 
 export const AuthNavigation = () => {
@@ -24,6 +26,8 @@ export const AuthNavigation = () => {
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="CreateAccount" component={CreateAccount} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+      <Stack.Screen name="OTPVerification" component={OtpVerification} />
     </Stack.Navigator>
   );
 };

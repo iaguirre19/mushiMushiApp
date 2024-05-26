@@ -26,6 +26,14 @@ const LoginScreen: React.FC<Props> = ({navigation}) => {
   const handleGoToHome = () => {
     navigation.navigate('Home');
   };
+
+  const handleCreateAccount = () => {
+    navigation.navigate('CreateAccount');
+  };
+
+  const handleForgotPassword = () => {
+    navigation.navigate('ForgotPassword');
+  };
   return (
     <View style={globalStyles.containerInput}>
       <View
@@ -82,25 +90,23 @@ const LoginScreen: React.FC<Props> = ({navigation}) => {
         style={{
           flex: 0.6,
           justifyContent: 'flex-start',
-          //   backgroundColor: 'red',
           marginTop: 8,
         }}>
-        <RememberMeView />
+        <RememberMeView onPress={handleForgotPassword} />
       </View>
       <View style={[globalStyles.btnContainer, {flex: 1}]}>
         <Button
           mode="contained"
           onPress={handleLogin}
-          style={[
-            authGlobalStyles.btnStyles,
-            {backgroundColor: colors.tertiary},
-          ]}
+          style={[{backgroundColor: colors.tertiary, paddingVertical: 4}]}
           icon="login">
           Iniciar Sesión
         </Button>
-        <Text style={globalStyles.registerText}>
-          ¿No tienes una cuenta? Crear Cuenta
-        </Text>
+        <TouchableOpacity onPress={handleCreateAccount}>
+          <Text style={globalStyles.registerText}>
+            ¿No tienes una cuenta? Crear Cuenta
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
