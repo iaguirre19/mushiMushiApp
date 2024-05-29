@@ -1,5 +1,13 @@
 import {useState} from 'react';
-import {SafeAreaView, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Text, Button} from 'react-native-paper';
 import {
   authGlobalStyles,
@@ -10,6 +18,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {RootNavigationProp} from '../../../types/navigationTypes';
 import {createAccountStyles} from '../../theme/authGlobalStyles';
 import CustomInput from '../../components/CustomInput';
+import {StyleSheet} from 'react-native';
 
 type Props = {
   navigation: RootNavigationProp;
@@ -18,91 +27,108 @@ export const CreateAccount: React.FC<Props> = ({navigation}) => {
   const handleGoToHome = () => {
     navigation.navigate('OTPVerification');
   };
+  const handleGoBack = () => {
+    navigation.goBack();
+  };
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <View style={createAccountStyles.container}>
-        <View style={createAccountStyles.iconContainer}>
-          <TouchableOpacity
-            style={{
-              flex: 1,
-              position: 'absolute',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginTop: 50,
-              width: 50,
-              height: 50,
-              borderColor: '#eee',
-              borderWidth: 1,
-              borderRadius: 10,
-              top: 0,
-              left: 0,
-            }}
-            onPress={() => navigation.navigate('Home')}>
-            <Icon
-              style={[{color: colors.primary}]}
-              name="arrow-left-top"
-              size={26}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}
+      // keyboardVerticalOffset={300} // Ajuste opcional para desplazamiento vertical
+    >
+      <ScrollView
+        contentContainerStyle={{flexGrow: 1, width: '100%', height: '100%'}}>
+        <View style={globalStyles.inner}>
+          <View style={globalStyles.mainContent}>
+            <View style={globalStyles.header}>
+              <TouchableOpacity
+                style={globalStyles.btnBack}
+                onPress={handleGoBack}>
+                <Icon
+                  style={{color: colors.primary}}
+                  name="arrow-left-top"
+                  size={26}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={globalStyles.logoContainer}>
+              <Image
+                source={require('../../../assets/img/logo-naranja.png')}
+                style={globalStyles.orangeLogo}
+              />
+            </View>
+            <Text
+              variant="headlineMedium"
+              style={[globalStyles.textColor, {textAlign: 'center'}]}>
+              Crear Cuenta de{' '}
+              <Text style={{color: colors.secondary}}>Mushi Mushi</Text>
+            </Text>
+            <Text
+              variant="titleMedium"
+              style={[
+                globalStyles.subText,
+                {textAlign: 'center', marginBottom: 20},
+              ]}>
+              Por favor, complete los campos de abajo
+            </Text>
+            <CustomInput
+              label="Nombre"
+              placeholder="Enter your name"
+              value={name}
+              onChangeText={text => setName(text)}
+              icon="account"
             />
-          </TouchableOpacity>
+            <CustomInput
+              label="Email"
+              placeholder="Enter your email"
+              value={email}
+              onChangeText={text => setEmail(text)}
+              icon="email"
+            />
+            <CustomInput
+              label="Contraseña"
+              placeholder="Enter your password"
+              value={password}
+              onChangeText={text => setPassword(text)}
+              secureTextEntry={true}
+              icon="lock"
+              password
+            />
+            <CustomInput
+              label="Confirmar Contraseña"
+              placeholder="Confirm your password"
+              value={password}
+              onChangeText={text => setPassword(text)}
+              secureTextEntry={true}
+              icon="lock"
+              password
+            />
+            <Button
+              mode="contained"
+              onPress={handleGoToHome}
+              icon={'account-plus'}
+              style={[
+                {
+                  backgroundColor: colors.tertiary,
+                  paddingVertical: 4,
+                  marginTop: 20,
+                },
+              ]}>
+              Crear Cuenta
+            </Button>
+          </View>
         </View>
-        <View style={createAccountStyles.titleSection}>
-          <Text variant="titleLarge">
-            Crear Cuenta de{' '}
-            <Text style={{color: colors.secondary}}>Mushi Mushi</Text>
-          </Text>
-          <Text variant="bodyMedium" style={{color: '#4A4A4A'}}>
-            Por favor, complete los campos de abajo
-          </Text>
-        </View>
-        <View style={createAccountStyles.inputContainer}>
-          <CustomInput
-            label="Nombre"
-            placeholder="Enter your name"
-            value={name}
-            onChangeText={text => setName(text)}
-            icon="account"
-          />
-          <CustomInput
-            label="Email"
-            placeholder="Enter your email"
-            value={email}
-            onChangeText={text => setEmail(text)}
-            icon="email"
-          />
-          <CustomInput
-            label="Contraseña"
-            placeholder="Enter your password"
-            value={password}
-            onChangeText={text => setPassword(text)}
-            secureTextEntry={true}
-            icon="lock"
-            password
-          />
-          <CustomInput
-            label="Confirmar Contraseña"
-            placeholder="Confirm your password"
-            value={password}
-            onChangeText={text => setPassword(text)}
-            secureTextEntry={true}
-            icon="lock"
-            password
-          />
-        </View>
-        <View style={createAccountStyles.btnContainer}>
-          <Button
-            mode="contained"
-            onPress={handleGoToHome}
-            icon={'account-plus'}
-            style={[{backgroundColor: colors.tertiary, paddingVertical: 4}]}>
-            Crear Cuenta
-          </Button>
-        </View>
-      </View>
-    </SafeAreaView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {},
+});

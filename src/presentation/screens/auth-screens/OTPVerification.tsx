@@ -57,8 +57,8 @@ export const OtpVerification: React.FC<Props> = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.content}>
-        <View style={styles.header}>
+      <View style={[styles.content, {paddingHorizontal: 28}]}>
+        <View style={[styles.header, {marginTop: -38}]}>
           <TouchableOpacity
             style={styles.btnBack}
             onPress={() => {
@@ -101,12 +101,11 @@ export const OtpVerification: React.FC<Props> = ({navigation}) => {
           <Button
             mode="text"
             // onPress={handleResendCode}
-            disabled={isResendDisabled}
-            style={styles.resendButton}>
+            disabled={isResendDisabled}>
             Resend Code
           </Button>
         </View>
-        <View>
+        <View style={{marginBottom: 20}}>
           <Button
             mode="contained"
             onPress={() => {
@@ -129,7 +128,7 @@ export const OtpVerification: React.FC<Props> = ({navigation}) => {
               }>
               <Text variant="headlineSmall" style={styles.keyboardButtonText}>
                 {value === 'delete' ? (
-                  <Icon style={styles.deleteIcon} name={'backspace-outline'} />
+                  <Icon style={styles.deleteIcon} name={'backspace'} />
                 ) : (
                   value
                 )}
@@ -147,7 +146,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
-    backgroundColor: '#f7f8fe',
   },
   iconContainer: {
     alignItems: 'center',
@@ -162,13 +160,11 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 20,
     padding: 20,
-    // marginHorizontal: 20,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    // backgroundColor: 'red',
     position: 'relative',
     paddingTop: 40,
   },
@@ -180,8 +176,6 @@ const styles = StyleSheet.create({
     borderColor: '#eee',
     borderWidth: 1,
     borderRadius: 10,
-    // position: 'absolute',
-    // top: 40,
   },
   backIcon: {
     fontSize: 22,
@@ -206,7 +200,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    // marginVertical: 20,
   },
   otpInput: {
     flexDirection: 'row',

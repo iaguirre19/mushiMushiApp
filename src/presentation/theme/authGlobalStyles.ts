@@ -70,6 +70,72 @@ export const authGlobalStyles = StyleSheet.create({
   },
 });
 
+// export const globalStyles = StyleSheet.create({
+//   mainContainer: {
+//     flex: 1,
+//     width: '100%',
+//     height: '100%',
+//     paddingHorizontal: 32,
+//     justifyContent: 'flex-start',
+//   },
+//   containerInput: {
+//     flex: 1,
+//     justifyContent: 'center',
+//     paddingHorizontal: 32,
+//     backgroundColor: '#fff',
+//     rowGap: 28,
+//   },
+//   inputContainer: {
+//     marginVertical: 8,
+//   },
+//   input: {
+//     backgroundColor: 'transparent',
+//     borderRadius: 30,
+//   },
+//   button: {
+//     marginBottom: 16,
+//     backgroundColor: '#6200ee',
+//   },
+//   icon: {
+//     alignSelf: 'center',
+//     marginBottom: 32,
+//   },
+//   registerText: {
+//     textAlign: 'center',
+//     color: colors.tertiary,
+//   },
+//   textColor: {
+//     color: '#000',
+//   },
+//   placeholderColor: {
+//     color: '#666',
+//   },
+//   borderColor: {
+//     color: colors.primary,
+//   },
+//   btnContainer: {
+//     flex: 1,
+//     flexDirection: 'column',
+//     rowGap: 20,
+//   },
+//   subText: {
+//     color: colors.subTextColor,
+//   },
+//   btnBack: {
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     marginTop: 90,
+//     width: 50,
+//     height: 50,
+//     borderColor: '#eee',
+//     borderWidth: 1,
+//     borderRadius: 10,
+//     position: 'absolute',
+//     top: 0,
+//     left: 0,
+//   },
+// });
+
 export const globalStyles = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -124,15 +190,41 @@ export const globalStyles = StyleSheet.create({
   btnBack: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 90,
     width: 50,
     height: 50,
     borderColor: '#eee',
     borderWidth: 1,
     borderRadius: 10,
-    position: 'absolute',
-    top: 0,
-    left: 0,
+  },
+  inner: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    padding: 28,
+  },
+  header: {
+    flex: 1,
+    width: '100%',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  mainContent: {
+    flex: 11,
+    width: '100%',
+    height: '100%',
+  },
+  logoContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  orangeLogo: {
+    width: 800,
+    height: 390,
+    resizeMode: 'contain',
+    borderColor: '#eee',
+    borderWidth: 0,
+    borderRadius: 0,
   },
 });
 
@@ -147,29 +239,26 @@ export const createAccountStyles = StyleSheet.create({
   iconContainer: {
     flex: 2,
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
     width: '100%',
     height: '100%',
-    // backgroundColor: 'green',
     position: 'relative',
   },
   titleSection: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     width: '100%',
     rowGap: 8,
-    // backgroundColor: 'blue',
   },
   inputContainer: {
     flex: 4,
     justifyContent: 'center',
-    // backgroundColor: 'yellow',
   },
   btnContainer: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    // backgroundColor: 'red',
   },
 });

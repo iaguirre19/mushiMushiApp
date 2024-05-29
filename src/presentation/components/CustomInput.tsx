@@ -21,10 +21,18 @@ const CustomInput: React.FC<CustomInputProps> = ({
   onChangeText,
   secureTextEntry = false,
   icon = 'account',
-  password,
+  password = false,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const LeftIcon = ({iconName}: {iconName: string}) => (
+    <Icon color={globalStyles.borderColor.color} name={iconName} size={20} />
+  );
+
+  const RightIcon = ({isVisible}: {isVisible: boolean}) => (
+    <Icon name={isVisible ? 'eye-off' : 'eye'} size={20} />
+  );
 
   return (
     <View style={styles.inputContainer}>
@@ -37,21 +45,11 @@ const CustomInput: React.FC<CustomInputProps> = ({
         placeholder={placeholder}
         style={styles.input}
         mode="outlined"
-        left={
-          <TextInput.Icon
-            icon={() => (
-              <Icon
-                color={globalStyles.borderColor.color}
-                name={icon}
-                size={20}
-              />
-            )}
-          />
-        }
+        left={<TextInput.Icon icon={() => <LeftIcon iconName={icon} />} />}
         right={
           password && (
             <TextInput.Icon
-              icon={passwordVisible ? 'eye-off' : 'eye'}
+              icon={() => <RightIcon isVisible={passwordVisible} />}
               onPress={() => setPasswordVisible(!passwordVisible)}
             />
           )

@@ -11,7 +11,12 @@ const RememberMeView = ({onPress}: Props) => {
   const {colors} = useTheme();
 
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}>
       <View style={styles.checkboxContainer}>
         <Checkbox
           status={checked ? 'checked' : 'unchecked'}
@@ -32,6 +37,7 @@ const RememberMeView = ({onPress}: Props) => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
