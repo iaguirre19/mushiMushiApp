@@ -1,21 +1,23 @@
 import React, {useState, useEffect} from 'react';
 import {
   View,
-  TextInput,
   KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
   Platform,
   TouchableOpacity,
   Image,
+  useWindowDimensions,
+  Dimensions,
+  TextInput,
 } from 'react-native';
 import {Text, Button} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Asegúrate de importar el icono correctamente
 import {globalStyles, colors} from '../../theme/authGlobalStyles';
-import CustomInput from '../../components/CustomInput';
+// import CustomInput from '../../components/CustomInput';
 import RememberMeView from '../../components/RemembermeView';
 import {RootNavigationProp} from '../../../types/navigationTypes';
-
+import CustomInput from '../../components/CustomTextInput';
 type Props = {
   navigation: RootNavigationProp;
 };
@@ -23,6 +25,8 @@ type Props = {
 const App: React.FC<Props> = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const {width, height} = useWindowDimensions();
 
   const handleLogin = () => {
     navigation.navigate('Home');
@@ -38,99 +42,140 @@ const App: React.FC<Props> = ({navigation}) => {
 
   const handleForgotPassword = () => {
     navigation.navigate('ForgotPassword');
-    // Lógica para enviar el enlace de restablecimiento de contraseña
   };
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'position' : 'height'}
+      style={{...styles.container, height: height, width: width}}
       keyboardVerticalOffset={60} // Ajuste opcional para desplazamiento vertical
     >
-      <ScrollView contentContainerStyle={styles.scrollView}>
-        <View style={globalStyles.inner}>
-          <View style={[globalStyles.header]}>
-            <TouchableOpacity
-              style={globalStyles.btnBack}
-              onPress={handleGoToHome}>
-              <Icon
-                style={{color: colors.primary}}
-                name="arrow-left-top"
-                size={26}
-              />
-            </TouchableOpacity>
-          </View>
+      <View
+        style={{
+          flex: 1,
+          width: '100%',
+          height: '100%',
+          position: 'relative',
+        }}>
+        <View
+          style={{
+            width: '100%',
+            height: '10%',
+            alignItems: 'flex-start',
+            justifyContent: 'center',
+            zIndex: 10,
+          }}>
+          <TouchableOpacity
+            style={{
+              ...globalStyles.btnBack,
+            }}
+            onPress={handleGoToHome}>
+            <Icon
+              style={{color: colors.primary}}
+              name="arrow-left-top"
+              size={26}
+            />
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            width: '100%',
+            height: '90%',
+          }}>
           <View
             style={{
-              flex: 1,
-              flexDirection: 'column',
-              justifyContent: 'flex-start',
-              width: '100%',
+              flex: width > 410 ? 2 : 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: 40,
             }}>
-            <View style={{alignItems: 'center', justifyContent: 'center'}}>
-              <Image
-                source={require('../../../assets/img/logo-naranja.png')}
-                style={styles.orangeLogo}
+            <Image
+              source={require('../../../assets/img/logo-naranja.png')}
+              style={{
+                ...styles.orangeLogo,
+                width: Dimensions.get('window').width > 410 ? 520 : 800,
+              }}
+            />
+          </View>
+          <View style={{flex: 1, width: '100%'}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 8,
+              }}>
+              <Text
+                variant="headlineMedium"
+                style={[
+                  globalStyles.textColor,
+                  {fontSize: Dimensions.get('window').width < 412 ? 24 : 32},
+                ]}>
+                Bienvenido de nuevo
+              </Text>
+              <Icon
+                style={[{color: colors.primary}]}
+                name="creation"
+                size={26}
               />
             </View>
-            <View style={{alignItems: 'center', justifyContent: 'center'}}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignContent: 'center',
-                  width: '100%',
-                  columnGap: 8,
-                }}>
-                <Text variant="headlineMedium" style={globalStyles.textColor}>
-                  Bienvenido de nuevo
-                </Text>
-                <Icon
-                  style={[{color: colors.primary}]}
-                  name="creation"
-                  size={26}
-                />
-              </View>
-              <Text
-                variant="titleMedium"
-                style={[globalStyles.subText, {marginBottom: 40}]}>
-                Inicia sesión en tu cuenta
-              </Text>
-            </View>
-            <CustomInput
-              label="Correo Electrónico"
-              placeholder="Enter your email"
-              value={email}
-              onChangeText={text => setEmail(text)}
-              icon="email"
-            />
-            <CustomInput
-              label="Contraseña"
-              placeholder="Enter your password"
-              value={password}
-              onChangeText={text => setPassword(text)}
-              secureTextEntry={true}
-              icon="lock"
-              password
-            />
+            <Text
+              variant="titleMedium"
+              style={[globalStyles.subText, {textAlign: 'center'}]}>
+              Inicia sesión en tu cuenta
+            </Text>
+          </View>
+          <CustomInput
+            placeholder="Ingresa tu correo"
+            label="Correo Electrónico"
+            iconName="email-outline"
+            value={email}
+            onChangeText={text => setEmail(text)}
+            secureTextEntry={false}
+            keyboardType="email-address"
+          />
+          <CustomInput
+            placeholder="Ingresa tu contraseña"
+            label="Contraseña"
+            iconName="lock-outline"
+            value={password}
+            onChangeText={text => setPassword(text)}
+            secureTextEntry={true}
+            keyboardType="default"
+          />
+          <View
+            style={{
+              width: '100%',
+              justifyContent: 'space-between',
+            }}>
             <RememberMeView onPress={handleForgotPassword} />
-            <View style={[globalStyles.btnContainer, {flex: 1, marginTop: 60}]}>
-              <Button
-                mode="contained"
-                onPress={handleLogin}
-                style={[{backgroundColor: colors.tertiary, paddingVertical: 4}]}
-                icon="login">
-                Iniciar Sesión
-              </Button>
-              <TouchableOpacity onPress={handleCreateAccount}>
-                <Text style={globalStyles.registerText}>
-                  ¿No tienes una cuenta? Crear Cuenta
-                </Text>
-              </TouchableOpacity>
-            </View>
+          </View>
+          <View
+            style={[globalStyles.btnContainer, {marginTop: 40, width: '100%'}]}>
+            <Button
+              mode="contained"
+              onPress={handleLogin}
+              style={[
+                {
+                  backgroundColor: colors.tertiary,
+                  width: '100%',
+                  minHeight: 40,
+                },
+              ]}
+              icon="login">
+              Iniciar Sesión
+            </Button>
+            <TouchableOpacity onPress={handleCreateAccount}>
+              <Text style={globalStyles.registerText}>
+                ¿No tienes una cuenta? Crear Cuenta
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
-      </ScrollView>
+      </View>
     </KeyboardAvoidingView>
   );
 };
@@ -138,9 +183,16 @@ const App: React.FC<Props> = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: 24,
+    paddingVertical: 32,
   },
   scrollView: {
-    flexGrow: 1,
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'red',
+    alignContent: 'center',
+    justifyContent: 'center',
   },
   content: {
     flex: 1,

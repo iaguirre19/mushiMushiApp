@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Checkbox, Text, useTheme} from 'react-native-paper';
+import {colors} from '../theme/authGlobalStyles';
 
 type Props = {
   onPress: () => void;
@@ -8,7 +9,6 @@ type Props = {
 
 const RememberMeView = ({onPress}: Props) => {
   const [checked, setChecked] = useState(false);
-  const {colors} = useTheme();
 
   return (
     <View
@@ -22,7 +22,7 @@ const RememberMeView = ({onPress}: Props) => {
           status={checked ? 'checked' : 'unchecked'}
           onPress={() => setChecked(!checked)}
           color={colors.primary}
-          uncheckedColor={'red'}
+          uncheckedColor={colors.primary}
         />
         <Text style={styles.label}>Recuérdame</Text>
       </View>

@@ -69,7 +69,7 @@ export const Home: React.FC<Props> = ({navigation}) => {
             onPress={handleLogin}
             mode="contained-tonal"
             labelStyle={{color: 'white', fontWeight: 'bold'}}
-            style={[{backgroundColor: colors.primary, paddingVertical: 4}]}>
+            style={[{backgroundColor: colors.primary}]}>
             Iniciar sesión
           </Button>
           <Button
@@ -77,7 +77,7 @@ export const Home: React.FC<Props> = ({navigation}) => {
             onPress={handleCreateAccount}
             mode="outlined"
             labelStyle={{color: colors.tertiary}}
-            style={[{borderColor: colors.tertiary, paddingVertical: 4}]}>
+            style={[{borderColor: colors.tertiary}]}>
             Crear cuenta
           </Button>
         </View>
