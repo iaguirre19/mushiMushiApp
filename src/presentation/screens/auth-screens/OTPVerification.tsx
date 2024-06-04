@@ -1,15 +1,23 @@
-import {View, Image, StyleSheet, TouchableOpacity} from 'react-native';
-import {Text, TextInput, Button} from 'react-native-paper';
-import React, {useEffect, useState} from 'react';
-import Icon from 'react-native-vector-icons/Ionicons';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Dimensions,
+} from 'react-native';
+import {Button, Text, TextInput} from 'react-native-paper';
 import IconM from 'react-native-vector-icons/MaterialCommunityIcons';
-import {colors} from '../../theme/authGlobalStyles';
+import {colors, globalStyles} from '../../theme/authGlobalStyles';
 import {RootNavigationProp} from '../../../types/navigationTypes';
 
 type Props = {
   navigation: RootNavigationProp;
 };
-export const OtpVerification: React.FC<Props> = ({navigation}) => {
+
+const OtpVerification: React.FC<Props> = ({navigation}) => {
   const [otp, setOTP] = useState<string[]>(['', '', '', '', '']);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const numberButtons = [1, 2, 3, 4, 5, 6, 7, 8, 9, '#', 0, 'delete'];
@@ -49,137 +57,137 @@ export const OtpVerification: React.FC<Props> = ({navigation}) => {
       setOTP(newOTP);
     }
     if (!isResendDisabled) {
-      // Logic to resend the OTP code
       setTimer(60);
       setIsResendDisabled(true);
     }
   };
 
   return (
-    <View style={styles.container}>
-      <View style={[styles.content, {paddingHorizontal: 28}]}>
-        <View style={[styles.header, {marginTop: -38}]}>
-          <TouchableOpacity
-            style={styles.btnBack}
-            onPress={() => {
-              navigation.goBack();
-            }}>
-            <IconM
-              style={[{color: colors.primary}]}
-              name="arrow-left-top"
-              size={26}
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.titleSection}>
-          <Text variant="headlineSmall" style={styles.title}>
-            OTP verification
-          </Text>
-          <Text variant="titleMedium" style={styles.subtitle}>
-            Por favor, ingresa el OTP (Contraseña de un solo uso) enviado a tu
-            correo electronico para completar tu verificación.
-          </Text>
-        </View>
-        <View style={styles.otpContainer}>
-          {otp.map((digit = '', index) => (
-            <TextInput
-              key={index}
-              style={[
-                styles.otpInput,
-                index === currentIndex && styles.focusedInput,
-              ]}
-              value={digit}
-              maxLength={1}
-              keyboardType="number-pad"
-              underlineColor="transparent"
-              activeUnderlineColor="transparent"
-            />
-          ))}
-        </View>
-        <View style={styles.timerContainer}>
-          <Text style={styles.timerText}>Resend code in {timer} seconds</Text>
-          <Button
-            mode="text"
-            // onPress={handleResendCode}
-            disabled={isResendDisabled}>
-            Resend Code
-          </Button>
-        </View>
-        <View style={{marginBottom: 20}}>
-          <Button
-            mode="contained"
-            onPress={() => {
-              /* Add OTP verification functionality */
-            }}
-            style={styles.verifyButton}
-            icon="check">
-            Verify Code
-          </Button>
-        </View>
-        <View style={styles.keyboardContainer}>
-          {numberButtons.map((value, index) => (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={[styles.container, {flex: 1}]}
+      keyboardVerticalOffset={30} // Ajuste opcional para desplazamiento vertical
+    >
+      <ScrollView contentContainerStyle={styles.contentContainer}>
+        <View style={styles.responsiveContainer}>
+          <View style={styles.responsiveHeader}>
             <TouchableOpacity
-              key={index}
-              style={styles.keyboardButton}
-              onPress={() =>
-                value === 'delete'
-                  ? handleBackspace()
-                  : handleOTPInput(value.toString())
-              }>
-              <Text variant="headlineSmall" style={styles.keyboardButtonText}>
-                {value === 'delete' ? (
-                  <Icon style={styles.deleteIcon} name={'backspace'} />
-                ) : (
-                  value
-                )}
-              </Text>
+              style={globalStyles.btnBack}
+              onPress={() => {
+                navigation.goBack();
+              }}>
+              <IconM
+                style={{color: colors.primary}}
+                name="arrow-left-top"
+                size={26}
+              />
             </TouchableOpacity>
-          ))}
+          </View>
+          <View style={styles.responsiveContent}>
+            <View style={styles.titleSection}>
+              <Text variant="headlineSmall" style={styles.title}>
+                OTP verification
+              </Text>
+              <Text variant="titleMedium" style={styles.subtitle}>
+                Por favor, ingresa el OTP (Contraseña de un solo uso) enviado a
+                tu correo electronico para completar tu verificación.
+              </Text>
+            </View>
+            <View style={styles.otpContainer}>
+              {otp.map((digit = '', index) => (
+                <TextInput
+                  key={index}
+                  style={[
+                    styles.otpInput,
+                    index === currentIndex && styles.focusedInput,
+                  ]}
+                  value={digit}
+                  maxLength={1}
+                  keyboardType="number-pad"
+                  underlineColor="transparent"
+                  activeUnderlineColor="transparent"
+                />
+              ))}
+            </View>
+            <View style={styles.timerContainer}>
+              <Text style={styles.timerText}>
+                Resend code in {timer} seconds
+              </Text>
+              <Button mode="text" disabled={isResendDisabled}>
+                Resend Code
+              </Button>
+            </View>
+            <View style={{marginBottom: 20, width: '100%'}}>
+              <Button
+                mode="contained"
+                onPress={() => {
+                  /* Add OTP verification functionality */
+                }}
+                style={styles.verifyButton}
+                icon="check">
+                Verify Code
+              </Button>
+            </View>
+            <View style={styles.keyboardContainer}>
+              {numberButtons.map((value, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={styles.keyboardButton}
+                  onPress={() =>
+                    value === 'delete'
+                      ? handleBackspace()
+                      : handleOTPInput(value.toString())
+                  }>
+                  <Text
+                    variant="headlineSmall"
+                    style={styles.keyboardButtonText}>
+                    {value === 'delete' ? (
+                      <IconM
+                        style={styles.deleteIcon}
+                        name={'arrow-left-bottom'}
+                      />
+                    ) : (
+                      value
+                    )}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
         </View>
-      </View>
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: 24,
+    paddingVertical: 32,
+  },
+  contentContainer: {
+    flexGrow: 1,
+  },
+  responsiveContainer: {
+    flex: 1,
     width: '100%',
     height: '100%',
-  },
-  iconContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 40,
-  },
-  icon: {
-    width: 100,
-    height: 100,
-  },
-  content: {
-    flex: 1,
-    marginTop: 20,
-    padding: 20,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     position: 'relative',
-    paddingTop: 40,
   },
-  btnBack: {
-    alignItems: 'center',
+  responsiveHeader: {
+    width: '100%',
+    height: '10%',
+    alignItems: 'flex-start',
     justifyContent: 'center',
-    width: 50,
-    height: 50,
-    borderColor: '#eee',
-    borderWidth: 1,
-    borderRadius: 10,
+    zIndex: 10,
   },
-  backIcon: {
-    fontSize: 22,
-    color: colors.primary,
+  responsiveContent: {
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    width: '100%',
+    height: '90%',
   },
   titleSection: {
     flex: 1,
@@ -197,6 +205,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   otpContainer: {
+    width: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -227,9 +236,6 @@ const styles = StyleSheet.create({
   timerText: {
     color: colors.subTextColor,
     marginRight: 10,
-  },
-  resendButton: {
-    color: colors.primary,
   },
   verifyButton: {
     backgroundColor: colors.tertiary,

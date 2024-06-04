@@ -7,6 +7,7 @@ import LoginScreen from '../presentation/screens/auth-screens/Login';
 import {CreateAccountScreen} from '../presentation/screens/auth-screens/CreateAccount';
 import ForgotPassword from '../presentation/screens/auth-screens/ForgotPassword';
 import OtpVerification from '../presentation/screens/auth-screens/OTPVerification';
+// import {LoadingScreen} from '../presentation/screens/Loaders/MainLoader';
 const Stack = createStackNavigator<RootStackParamList>();
 
 export const AuthNavigation = () => {
@@ -23,6 +24,7 @@ export const AuthNavigation = () => {
           },
         }),
       }}>
+      {/* <Stack.Screen name="Loading" component={LoadingScreen} /> */}
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="CreateAccount" component={CreateAccountScreen} />

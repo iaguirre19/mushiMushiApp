@@ -1,6 +1,12 @@
-import React, {useState} from 'react';
-import {View, StyleSheet} from 'react-native';
-import {TextInput as PaperTextInput, Text} from 'react-native-paper';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
+import {Text} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {colors} from '../theme/authGlobalStyles';
 
@@ -15,45 +21,58 @@ interface CustomInputProps {
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
-  placeholder,
   label,
   iconName,
   value,
   onChangeText,
   secureTextEntry = false,
   keyboardType = 'default',
+  placeholder,
 }) => {
   const [isPasswordVisible, setPasswordVisible] = useState(secureTextEntry);
-  const [isFocused, setIsFocused] = useState<boolean>(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const [smallDevice, setSmallDevice] = useState(false);
+
+  useEffect(() => {
+    if (Dimensions.get('window').width < 412) {
+      setSmallDevice(true);
+    }
+  }, []);
 
   return (
     <View style={styles.container}>
-      <Text variant={'titleMedium'}>{label}</Text>
-      <PaperTextInput
-        mode="outlined"
-        value={value}
-        onChangeText={onChangeText}
-        secureTextEntry={isPasswordVisible}
-        placeholder={placeholder}
-        keyboardType={keyboardType}
-        left={<PaperTextInput.Icon color={colors.primary} icon={iconName} />}
-        right={
-          secureTextEntry ? (
-            <PaperTextInput.Icon
-              icon={isPasswordVisible ? 'eye-off' : 'eye'}
-              onPress={() => setPasswordVisible(!isPasswordVisible)}
+      <Text style={styles.label}>{label}</Text>
+      <View
+        style={[styles.inputContainer, isFocused && {borderColor: 'orange'}]}>
+        <Icon name={iconName} size={20} color="gray" style={styles.icon} />
+        <TextInput
+          style={[
+            styles.input,
+            {height: smallDevice ? 45 : 50, fontSize: smallDevice ? 16 : 20},
+          ]}
+          value={value}
+          onChangeText={onChangeText}
+          placeholder={placeholder}
+          secureTextEntry={isPasswordVisible}
+          keyboardType={keyboardType}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          multiline={false}
+          numberOfLines={1}
+          textAlignVertical="center"
+        />
+        {secureTextEntry && (
+          <TouchableOpacity
+            onPress={() => setPasswordVisible(!isPasswordVisible)}
+            style={styles.icon}>
+            <Icon
+              name={isPasswordVisible ? 'eye-off' : 'eye'}
+              size={20}
+              color="gray"
             />
-          ) : null
-        }
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        style={styles.input}
-        theme={{
-          colors: {
-            primary: isFocused ? 'orange' : colors.primary,
-          },
-        }}
-      />
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 };
@@ -62,11 +81,28 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: 8,
     width: '100%',
-    rowGap: 8,
+  },
+  label: {
+    fontSize: 16,
+    marginBottom: 4,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 12,
+    backgroundColor: 'white',
+    paddingHorizontal: 8,
+  },
+  icon: {
+    marginRight: 8,
+    color: colors.primary,
   },
   input: {
-    backgroundColor: 'white',
-    width: '100%', // Ajusta este valor según sea necesario
+    flex: 1,
+    paddingVertical: 0,
+    paddingHorizontal: 0,
   },
 });
 

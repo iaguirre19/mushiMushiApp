@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   StyleSheet,
@@ -7,16 +7,17 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Dimensions,
 } from 'react-native';
 import {Button, Text} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import CustomInput from '../../components/CustomInput';
 import {
   authGlobalStyles,
   colors,
   globalStyles,
 } from '../../theme/authGlobalStyles';
 import {RootNavigationProp} from '../../../types/navigationTypes';
+import CustomInput from '../../components/CustomTextInput';
 
 type Props = {
   navigation: RootNavigationProp;
@@ -24,6 +25,15 @@ type Props = {
 
 const ForgotPasswordScreen: React.FC<Props> = ({navigation}) => {
   const [email, setEmail] = useState('');
+  const [smallDevice, setSmallDevice] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (Dimensions.get('window').width < 412) {
+      setSmallDevice(true);
+    }
+  }, []);
+
+  console.log(smallDevice);
 
   const handleSendResetLink = () => {
     // Lógica para enviar el enlace de restablecimiento de contraseña
@@ -36,133 +46,125 @@ const ForgotPasswordScreen: React.FC<Props> = ({navigation}) => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{flex: 1}}
-      keyboardVerticalOffset={10} // Ajuste opcional para desplazamiento vertical
+      style={[styles.container, {flex: 1}]}
+      keyboardVerticalOffset={30} // Ajuste opcional para desplazamiento vertical
     >
-      <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-          width: '100%',
-          height: '100%',
-        }}>
-        <View style={globalStyles.inner}>
-          <View style={[globalStyles.mainContent]}>
-            <View style={[globalStyles.header]}>
-              <TouchableOpacity
-                style={globalStyles.btnBack}
-                onPress={handleGoBack}>
-                <Icon
-                  style={{color: colors.primary}}
-                  name="arrow-left-top"
-                  size={26}
-                />
-              </TouchableOpacity>
-            </View>
+      <View style={styles.responsiveContainer}>
+        <View style={styles.responsiveHeader}>
+          <TouchableOpacity
+            style={{
+              ...globalStyles.btnBack,
+            }}
+            onPress={handleGoBack}>
+            <Icon
+              style={{color: colors.primary}}
+              name="arrow-left-top"
+              size={26}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.responsiveContent}>
+          <View style={{width: '100%'}}>
             <View
               style={{
-                alignContent: 'center',
-                justifyContent: 'flex-start',
-                // backgroundColor: 'red',
-                flex: 11,
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: 110,
               }}>
-              <View style={globalStyles.logoContainer}>
-                <Image
-                  source={require('../../../assets/img/logo-naranja.png')}
-                  style={globalStyles.orangeLogo}
-                />
-              </View>
+              <Image
+                source={require('../../../assets/img/logo-naranja.png')}
+                style={{
+                  ...globalStyles.orangeLogo,
+                  width: Dimensions.get('window').width > 410 ? 420 : 800,
+                }}
+              />
+            </View>
+            <View>
               <Text
                 variant="headlineMedium"
-                style={[globalStyles.textColor, {textAlign: 'center'}]}
-                numberOfLines={2}>
+                style={[
+                  globalStyles.textColor,
+                  {
+                    textAlign: 'center',
+                    fontSize: smallDevice ? 24 : 32,
+                  },
+                ]}>
                 ¿Olvidaste tu contraseña?
               </Text>
               <Text
                 variant="titleMedium"
                 style={[
                   globalStyles.subText,
-                  {textAlign: 'center', marginBottom: 20},
+                  {
+                    textAlign: 'center',
+                    marginBottom: 20,
+                    fontSize: smallDevice ? 16 : 20,
+                  },
                 ]}>
                 Ingresa tu correo electrónico para restablecer tu contraseña
               </Text>
-              <CustomInput
-                label="Correo Electrónico"
-                placeholder="Ingresa tu correo"
-                value={email}
-                onChangeText={text => setEmail(text)}
-                icon="email"
-              />
-              <Button
-                mode="contained"
-                onPress={handleSendResetLink}
-                style={[
-                  {
-                    backgroundColor: colors.tertiary,
-                    paddingVertical: 4,
-                    marginTop: 20,
-                  },
-                ]}
-                icon="send">
-                Enviar enlace de restablecimiento
-              </Button>
             </View>
-          </View>
-        </View>
-        {/* <View style={globalStyles.inner}>
-          <View style={[globalStyles.header]}>
-            <TouchableOpacity
-              style={globalStyles.btnBack}
-              onPress={handleGoBack}>
-              <Icon
-                style={{color: colors.primary}}
-                name="arrow-left-top"
-                size={26}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={{alignItems: 'center', justifyContent: 'center'}}>
-            <Image
-              source={require('../../../assets/img/logo-naranja.png')}
-              style={globalStyles.orangeLogo}
+            <CustomInput
+              label="Correo Electrónico"
+              placeholder="Ingresa tu correo"
+              value={email}
+              onChangeText={text => setEmail(text)}
+              iconName="email-outline"
             />
-          </View>
-          <View style={{alignItems: 'center', justifyContent: 'center'}}>
-            <Text variant="headlineMedium" style={globalStyles.textColor}>
-              ¿Olvidaste tu contraseña?
-            </Text>
-            <Text
-              variant="titleMedium"
-              style={[globalStyles.subText, {textAlign: 'center'}]}>
-              Ingresa tu correo electrónico para restablecer tu contraseña
-            </Text>
-          </View>
-          <CustomInput
-            label="Correo Electrónico"
-            placeholder="Ingresa tu correo"
-            value={email}
-            onChangeText={text => setEmail(text)}
-            icon="email"
-          />
-
-          <View style={[globalStyles.btnContainer, {flex: 1}]}>
             <Button
               mode="contained"
               onPress={handleSendResetLink}
-              style={[{backgroundColor: colors.tertiary, paddingVertical: 4}]}
+              style={[
+                {
+                  backgroundColor: colors.tertiary,
+                  marginTop: 20,
+                  width: '100%',
+                },
+              ]}
               icon="send">
               Enviar enlace de restablecimiento
             </Button>
-
-            <TouchableOpacity onPress={handleGoBack}>
-              <Text style={globalStyles.registerText}>
-                Recordaste tu contraseña? Iniciar Sesión
-              </Text>
-            </TouchableOpacity>
           </View>
-        </View> */}
-      </ScrollView>
+        </View>
+      </View>
     </KeyboardAvoidingView>
   );
 };
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 24,
+    paddingVertical: 32,
+  },
+  responsiveContainer: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    position: 'relative',
+  },
+  responsiveHeader: {
+    width: '100%',
+    height: '10%',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    zIndex: 10,
+  },
+  responsiveContent: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '90%',
+  },
+  orangeLogo: {
+    width: 800,
+    height: 390,
+    resizeMode: 'contain',
+    borderColor: '#eee',
+    borderWidth: 0,
+    borderRadius: 0,
+  },
+});
 export default ForgotPasswordScreen;

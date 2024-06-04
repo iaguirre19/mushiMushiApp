@@ -7,6 +7,7 @@ interface User {
 }
 
 export type RootStackParamList = {
+  Loading: undefined;
   Home: undefined;
   AuthUser: undefined;
   Dashboard: {data: {user: User; isLoggedIn: boolean; isLoading: boolean}};

@@ -11,7 +11,6 @@ type Props = {
 };
 
 export const Home: React.FC<Props> = ({navigation}) => {
-  console.log(navigation);
   const {width, height} = Dimensions.get('window');
 
   const handleLogin = () => {
@@ -30,7 +29,7 @@ export const Home: React.FC<Props> = ({navigation}) => {
         />
       </View>
       <View style={[authGlobalStyles.bottomContent, {width: width}]}>
-        <View style={{width: '100%', flex: 1, rowGap: 20}}>
+        <View style={{width: '100%', rowGap: 20}}>
           <Text
             variant="headlineSmall"
             numberOfLines={2}
@@ -40,7 +39,7 @@ export const Home: React.FC<Props> = ({navigation}) => {
               alignContent: 'center',
               justifyContent: 'center',
             }}>
-            Bienvenido a Mushi Mushi{' '}
+            Bienvenido a <Text>mushi mushi</Text>{' '}
             <Icon style={{color: colors.primary}} name="creation" size={26} />
           </Text>
           <Text

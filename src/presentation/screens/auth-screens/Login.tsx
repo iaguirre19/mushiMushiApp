@@ -2,22 +2,21 @@ import React, {useState, useEffect} from 'react';
 import {
   View,
   KeyboardAvoidingView,
-  ScrollView,
   StyleSheet,
   Platform,
   TouchableOpacity,
   Image,
   useWindowDimensions,
   Dimensions,
-  TextInput,
 } from 'react-native';
+
 import {Text, Button} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Asegúrate de importar el icono correctamente
 import {globalStyles, colors} from '../../theme/authGlobalStyles';
-// import CustomInput from '../../components/CustomInput';
 import RememberMeView from '../../components/RemembermeView';
 import {RootNavigationProp} from '../../../types/navigationTypes';
 import CustomInput from '../../components/CustomTextInput';
+
 type Props = {
   navigation: RootNavigationProp;
 };
@@ -46,16 +45,15 @@ const App: React.FC<Props> = ({navigation}) => {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'position' : 'height'}
+      behavior={Platform.OS === 'ios' ? 'position' : 'padding'}
       style={{...styles.container, height: height, width: width}}
-      keyboardVerticalOffset={60} // Ajuste opcional para desplazamiento vertical
+      keyboardVerticalOffset={0} // Ajuste opcional para desplazamiento vertical
     >
       <View
         style={{
           flex: 1,
           width: '100%',
           height: '100%',
-          position: 'relative',
         }}>
         <View
           style={{
@@ -80,27 +78,29 @@ const App: React.FC<Props> = ({navigation}) => {
         <View
           style={{
             flexDirection: 'column',
-            justifyContent: 'flex-end',
+            justifyContent: 'center',
             alignItems: 'center',
             width: '100%',
-            height: '90%',
+            height: '80%',
           }}>
-          <View
-            style={{
-              flex: width > 410 ? 2 : 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginBottom: 40,
-            }}>
-            <Image
-              source={require('../../../assets/img/logo-naranja.png')}
+          <View style={{width: '100%'}}>
+            <View
               style={{
-                ...styles.orangeLogo,
-                width: Dimensions.get('window').width > 410 ? 520 : 800,
-              }}
-            />
-          </View>
-          <View style={{flex: 1, width: '100%'}}>
+                flex: width > 410 ? 2 : 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: 110,
+                width: '100%',
+                height: '100%',
+              }}>
+              <Image
+                source={require('../../../assets/img/logo-naranja.png')}
+                style={{
+                  ...styles.orangeLogo,
+                  width: Dimensions.get('window').width > 410 ? 520 : 800,
+                }}
+              />
+            </View>
             <View
               style={{
                 flexDirection: 'row',
@@ -124,55 +124,61 @@ const App: React.FC<Props> = ({navigation}) => {
             </View>
             <Text
               variant="titleMedium"
-              style={[globalStyles.subText, {textAlign: 'center'}]}>
+              style={[
+                globalStyles.subText,
+                {textAlign: 'center', marginBottom: 30},
+              ]}>
               Inicia sesión en tu cuenta
             </Text>
-          </View>
-          <CustomInput
-            placeholder="Ingresa tu correo"
-            label="Correo Electrónico"
-            iconName="email-outline"
-            value={email}
-            onChangeText={text => setEmail(text)}
-            secureTextEntry={false}
-            keyboardType="email-address"
-          />
-          <CustomInput
-            placeholder="Ingresa tu contraseña"
-            label="Contraseña"
-            iconName="lock-outline"
-            value={password}
-            onChangeText={text => setPassword(text)}
-            secureTextEntry={true}
-            keyboardType="default"
-          />
-          <View
-            style={{
-              width: '100%',
-              justifyContent: 'space-between',
-            }}>
-            <RememberMeView onPress={handleForgotPassword} />
-          </View>
-          <View
-            style={[globalStyles.btnContainer, {marginTop: 40, width: '100%'}]}>
-            <Button
-              mode="contained"
-              onPress={handleLogin}
+            <CustomInput
+              placeholder="Ingresa tu correo"
+              label="Correo Electrónico"
+              iconName="email-outline"
+              value={email}
+              onChangeText={text => setEmail(text)}
+              secureTextEntry={false}
+              keyboardType="email-address"
+            />
+            <CustomInput
+              placeholder="Ingresa tu contraseña"
+              label="Contraseña"
+              iconName="lock-outline"
+              value={password}
+              onChangeText={text => setPassword(text)}
+              secureTextEntry={true}
+              keyboardType="default"
+            />
+            <View
+              style={{
+                width: '100%',
+                justifyContent: 'space-between',
+              }}>
+              <RememberMeView onPress={handleForgotPassword} />
+            </View>
+            <View
               style={[
-                {
-                  backgroundColor: colors.tertiary,
-                  width: '100%',
-                  minHeight: 40,
-                },
-              ]}
-              icon="login">
-              Iniciar Sesión
-            </Button>
-            <TouchableOpacity onPress={handleCreateAccount}>
-              <Text style={globalStyles.registerText}>
-                ¿No tienes una cuenta? Crear Cuenta
-              </Text>
-            </TouchableOpacity>
+                globalStyles.btnContainer,
+                {marginTop: 40, width: '100%'},
+              ]}>
+              <Button
+                mode="contained"
+                onPress={handleLogin}
+                style={[
+                  {
+                    backgroundColor: colors.tertiary,
+                    width: '100%',
+                    minHeight: 40,
+                  },
+                ]}
+                icon="login">
+                Iniciar Sesión
+              </Button>
+              <TouchableOpacity onPress={handleCreateAccount}>
+                <Text style={globalStyles.registerText}>
+                  ¿No tienes una cuenta? Crear Cuenta
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </View>
