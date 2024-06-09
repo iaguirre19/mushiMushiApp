@@ -1,18 +1,21 @@
 import React from 'react';
-import {Image, SafeAreaView, View} from 'react-native';
+import {Image, View} from 'react-native';
 import {Button, Text} from 'react-native-paper';
 import {authGlobalStyles, colors} from '../../theme/authGlobalStyles';
-import {Dimensions} from 'react-native';
+import {
+  responsiveHeight,
+  responsiveWidth,
+  responsiveFontSize,
+} from 'react-native-responsive-dimensions';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {RootNavigationProp} from '../../../types/navigationTypes';
+import CustomButton from '../../components/CustomButton';
 
 type Props = {
   navigation: RootNavigationProp;
 };
 
 export const Home: React.FC<Props> = ({navigation}) => {
-  const {width, height} = Dimensions.get('window');
-
   const handleLogin = () => {
     navigation.navigate('Login');
   };
@@ -20,16 +23,26 @@ export const Home: React.FC<Props> = ({navigation}) => {
   const handleCreateAccount = () => {
     navigation.navigate('CreateAccount');
   };
+
   return (
-    <View style={[authGlobalStyles.container, {width: width}]}>
+    <View style={[authGlobalStyles.container, {width: responsiveWidth(100)}]}>
       <View style={authGlobalStyles.topContent}>
         <Image
           source={require('../../../assets/img/logo.png')}
-          style={authGlobalStyles.topContentCardImage}
+          style={[
+            authGlobalStyles.topContentCardImage,
+            {width: responsiveWidth(60), height: responsiveHeight(35)},
+          ]}
         />
       </View>
-      <View style={[authGlobalStyles.bottomContent, {width: width}]}>
-        <View style={{width: '100%', rowGap: 20}}>
+      <View
+        style={[authGlobalStyles.bottomContent, {width: responsiveWidth(100)}]}>
+        <View
+          style={{
+            width: '100%',
+            marginBottom: responsiveHeight(2.5),
+            rowGap: responsiveHeight(1.8),
+          }}>
           <Text
             variant="headlineSmall"
             numberOfLines={2}
@@ -38,9 +51,14 @@ export const Home: React.FC<Props> = ({navigation}) => {
               textAlign: 'center',
               alignContent: 'center',
               justifyContent: 'center',
+              fontSize: responsiveFontSize(2.7),
             }}>
             Bienvenido a <Text>mushi mushi</Text>{' '}
-            <Icon style={{color: colors.primary}} name="creation" size={26} />
+            <Icon
+              style={{color: colors.primary}}
+              name="creation"
+              size={responsiveFontSize(3.25)}
+            />
           </Text>
           <Text
             variant="bodyLarge"
@@ -48,6 +66,7 @@ export const Home: React.FC<Props> = ({navigation}) => {
               width: '100%',
               textAlign: 'center',
               color: colors.subTextColor,
+              fontSize: responsiveFontSize(1.8),
             }}>
             Comparte tus creaciones, descubre nuevas ideas y conectate con
             personas apasionadas por el arte de tejer
@@ -60,25 +79,21 @@ export const Home: React.FC<Props> = ({navigation}) => {
             justifyContent: 'center',
             alignContent: 'center',
             width: '100%',
-            columnGap: 20,
-            rowGap: 20,
+            marginBottom: responsiveHeight(2),
+            rowGap: responsiveHeight(2),
           }}>
-          <Button
-            icon={'login'}
+          <CustomButton
+            iconName="login"
+            text="Iniciar sesión"
             onPress={handleLogin}
-            mode="contained-tonal"
-            labelStyle={{color: 'white', fontWeight: 'bold'}}
-            style={[{backgroundColor: colors.primary}]}>
-            Iniciar sesión
-          </Button>
-          <Button
-            icon={'account-plus'}
+            mode="contained"
+          />
+          <CustomButton
+            iconName="account-plus"
+            text="Crear cuenta"
             onPress={handleCreateAccount}
             mode="outlined"
-            labelStyle={{color: colors.tertiary}}
-            style={[{borderColor: colors.tertiary}]}>
-            Crear cuenta
-          </Button>
+          />
         </View>
       </View>
     </View>

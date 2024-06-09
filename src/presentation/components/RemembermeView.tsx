@@ -1,7 +1,12 @@
 import React, {useState} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
-import {Checkbox, Text, useTheme} from 'react-native-paper';
+import {Checkbox, Text} from 'react-native-paper';
 import {colors} from '../theme/authGlobalStyles';
+import {
+  responsiveHeight,
+  responsiveWidth,
+  responsiveFontSize,
+} from 'react-native-responsive-dimensions';
 
 type Props = {
   onPress: () => void;
@@ -11,12 +16,7 @@ const RememberMeView = ({onPress}: Props) => {
   const [checked, setChecked] = useState(false);
 
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}>
+    <View style={styles.container}>
       <View style={styles.checkboxContainer}>
         <Checkbox
           status={checked ? 'checked' : 'unchecked'}
@@ -27,9 +27,7 @@ const RememberMeView = ({onPress}: Props) => {
         <Text style={styles.label}>Recuérdame</Text>
       </View>
       <TouchableOpacity onPress={onPress}>
-        <Text style={[styles.forgotPassword, {color: colors.primary}]}>
-          Olvidé mi contraseña
-        </Text>
+        <Text style={styles.forgotPassword}>Olvidé mi contraseña</Text>
       </TouchableOpacity>
     </View>
   );
@@ -37,22 +35,24 @@ const RememberMeView = ({onPress}: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    width: '100%',
+    paddingVertical: responsiveHeight(1),
   },
   checkboxContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   label: {
-    marginLeft: 8,
-    fontSize: 16,
+    marginLeft: responsiveWidth(2),
+    fontSize: responsiveFontSize(2),
   },
   forgotPassword: {
     textDecorationLine: 'underline',
-    fontSize: 16,
+    fontSize: responsiveFontSize(2),
+    color: colors.primary,
   },
 });
 

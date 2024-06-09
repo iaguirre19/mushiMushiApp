@@ -7,11 +7,19 @@ import {
   Platform,
   ScrollView,
   Dimensions,
+  useWindowDimensions,
 } from 'react-native';
+import {
+  responsiveHeight,
+  responsiveWidth,
+  responsiveFontSize,
+} from 'react-native-responsive-dimensions';
 import {Button, Text, TextInput} from 'react-native-paper';
 import IconM from 'react-native-vector-icons/MaterialCommunityIcons';
 import {colors, globalStyles} from '../../theme/authGlobalStyles';
 import {RootNavigationProp} from '../../../types/navigationTypes';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import CustomButton from '../../components/CustomButton';
 
 type Props = {
   navigation: RootNavigationProp;
@@ -24,6 +32,7 @@ const OtpVerification: React.FC<Props> = ({navigation}) => {
   const [timer, setTimer] = useState<number>(60);
   const [isResendDisabled, setIsResendDisabled] = useState<boolean>(true);
 
+  const {width, height} = useWindowDimensions();
   useEffect(() => {
     if (timer > 0) {
       const interval = setInterval(() => {
@@ -45,6 +54,10 @@ const OtpVerification: React.FC<Props> = ({navigation}) => {
     }
   };
 
+  const handleGoToHome = () => {
+    navigation.navigate('Home');
+  };
+
   const handleBackspace = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
@@ -64,98 +77,108 @@ const OtpVerification: React.FC<Props> = ({navigation}) => {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={[styles.container, {flex: 1}]}
-      keyboardVerticalOffset={30} // Ajuste opcional para desplazamiento vertical
-    >
-      <ScrollView contentContainerStyle={styles.contentContainer}>
-        <View style={styles.responsiveContainer}>
-          <View style={styles.responsiveHeader}>
-            <TouchableOpacity
-              style={globalStyles.btnBack}
-              onPress={() => {
-                navigation.goBack();
-              }}>
-              <IconM
-                style={{color: colors.primary}}
-                name="arrow-left-top"
-                size={26}
-              />
-            </TouchableOpacity>
+      behavior={Platform.OS === 'ios' ? 'position' : 'height'}
+      style={{...styles.container, height: height, width: width}}
+      keyboardVerticalOffset={50}>
+      <View
+        style={{
+          flex: 1,
+          width: '100%',
+          height: '100%',
+        }}>
+        <View style={styles.responsiveHeader}>
+          <TouchableOpacity
+            style={globalStyles.btnBack}
+            onPress={() => {
+              navigation.goBack();
+            }}>
+            <IconM
+              style={{color: colors.primary}}
+              name="arrow-left-top"
+              size={26}
+            />
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%',
+            height: '80%',
+          }}>
+          <View style={styles.titleSection}>
+            <Text variant="headlineSmall" style={styles.title}>
+              OTP verification
+            </Text>
+            <Text
+              variant="titleSmall"
+              style={[
+                styles.subtitle,
+                {textAlign: 'center', marginBottom: responsiveHeight(3)},
+              ]}>
+              Por favor, ingresa el OTP (Contraseña de un solo uso) enviado a tu
+              correo electronico para completar tu verificación.
+            </Text>
           </View>
-          <View style={styles.responsiveContent}>
-            <View style={styles.titleSection}>
-              <Text variant="headlineSmall" style={styles.title}>
-                OTP verification
-              </Text>
-              <Text variant="titleMedium" style={styles.subtitle}>
-                Por favor, ingresa el OTP (Contraseña de un solo uso) enviado a
-                tu correo electronico para completar tu verificación.
-              </Text>
-            </View>
-            <View style={styles.otpContainer}>
-              {otp.map((digit = '', index) => (
-                <TextInput
-                  key={index}
-                  style={[
-                    styles.otpInput,
-                    index === currentIndex && styles.focusedInput,
-                  ]}
-                  value={digit}
-                  maxLength={1}
-                  keyboardType="number-pad"
-                  underlineColor="transparent"
-                  activeUnderlineColor="transparent"
-                />
-              ))}
-            </View>
-            <View style={styles.timerContainer}>
-              <Text style={styles.timerText}>
-                Resend code in {timer} seconds
-              </Text>
-              <Button mode="text" disabled={isResendDisabled}>
-                Resend Code
-              </Button>
-            </View>
-            <View style={{marginBottom: 20, width: '100%'}}>
-              <Button
-                mode="contained"
-                onPress={() => {
-                  /* Add OTP verification functionality */
-                }}
-                style={styles.verifyButton}
-                icon="check">
-                Verify Code
-              </Button>
-            </View>
-            <View style={styles.keyboardContainer}>
-              {numberButtons.map((value, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={styles.keyboardButton}
-                  onPress={() =>
-                    value === 'delete'
-                      ? handleBackspace()
-                      : handleOTPInput(value.toString())
-                  }>
-                  <Text
-                    variant="headlineSmall"
-                    style={styles.keyboardButtonText}>
-                    {value === 'delete' ? (
-                      <IconM
-                        style={styles.deleteIcon}
-                        name={'arrow-left-bottom'}
-                      />
-                    ) : (
-                      value
-                    )}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
+          <View style={styles.otpContainer}>
+            {otp.map((digit = '', index) => (
+              <TextInput
+                key={index}
+                style={[
+                  styles.otpInput,
+                  index === currentIndex && styles.focusedInput,
+                ]}
+                value={digit}
+                maxLength={1}
+                keyboardType="number-pad"
+                underlineColor="transparent"
+                activeUnderlineColor="transparent"
+              />
+            ))}
+          </View>
+          <View style={styles.timerContainer}>
+            <Text style={styles.timerText}>Resend code in {timer} seconds</Text>
+            <Button mode="text" disabled={isResendDisabled}>
+              Resend Code
+            </Button>
+          </View>
+          <View style={{marginBottom: 20, width: '100%'}}>
+            <CustomButton
+              iconName="check"
+              text="Verificar Codigo"
+              onPress={() => {
+                /* Add OTP verification functionality */
+                navigation.navigate('CreatePassword');
+              }}
+              mode="contained"
+            />
+          </View>
+          <View style={styles.keyboardContainer}>
+            {numberButtons.map((value, index) => (
+              <TouchableOpacity
+                key={index}
+                style={styles.keyboardButton}
+                onPress={() =>
+                  value === 'delete'
+                    ? handleBackspace()
+                    : handleOTPInput(value.toString())
+                }>
+                <Text variant="headlineSmall" style={styles.keyboardButtonText}>
+                  {value === 'delete' ? (
+                    <IconM
+                      style={styles.deleteIcon}
+                      name={'arrow-left-bottom'}
+                    />
+                  ) : (
+                    value
+                  )}
+                </Text>
+              </TouchableOpacity>
+            ))}
           </View>
         </View>
-      </ScrollView>
+      </View>
     </KeyboardAvoidingView>
   );
 };
@@ -163,8 +186,8 @@ const OtpVerification: React.FC<Props> = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 24,
-    paddingVertical: 32,
+    paddingHorizontal: responsiveWidth(4),
+    paddingVertical: responsiveHeight(2),
   },
   contentContainer: {
     flexGrow: 1,
@@ -177,7 +200,7 @@ const styles = StyleSheet.create({
   },
   responsiveHeader: {
     width: '100%',
-    height: '10%',
+    height: responsiveHeight(10),
     alignItems: 'flex-start',
     justifyContent: 'center',
     zIndex: 10,
@@ -193,34 +216,37 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 20,
+    marginTop: responsiveHeight(2),
   },
   title: {
     color: colors.primary,
     fontWeight: 'bold',
+    fontSize: responsiveFontSize(2.8),
   },
   subtitle: {
     color: colors.subTextColor,
     textAlign: 'center',
-    marginTop: 10,
+    marginTop: responsiveHeight(1),
+    fontSize: responsiveFontSize(1.7),
   },
   otpContainer: {
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    // marginBottom: responsiveHeight(2),
   },
   otpInput: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    width: 60,
-    height: 60,
+    width: responsiveWidth(14),
+    height: responsiveHeight(8),
     borderWidth: 1,
     borderColor: colors.primary,
-    borderRadius: 4,
-    marginHorizontal: 8,
-    fontSize: 18,
+    borderRadius: responsiveWidth(1),
+    marginHorizontal: responsiveWidth(2),
+    fontSize: responsiveFontSize(2),
     textAlign: 'center',
     backgroundColor: colors.whiteColor,
   },
@@ -231,15 +257,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 10,
+    marginVertical: responsiveHeight(1),
   },
   timerText: {
     color: colors.subTextColor,
-    marginRight: 10,
+    marginRight: responsiveWidth(2),
   },
   verifyButton: {
     backgroundColor: colors.tertiary,
-    paddingVertical: 4,
+    paddingVertical: responsiveHeight(0.5),
   },
   keyboardContainer: {
     flex: 1,
@@ -248,20 +274,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     maxWidth: '100%',
+    marginBottom: responsiveHeight(18),
   },
   keyboardButton: {
     width: '28%',
-    height: 60,
+    height: responsiveHeight(8),
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 8,
-    marginVertical: 8,
+    marginHorizontal: responsiveWidth(1),
+    marginVertical: responsiveHeight(1),
   },
   keyboardButtonText: {
     fontWeight: '500',
+    fontSize: responsiveFontSize(2.6),
   },
   deleteIcon: {
-    fontSize: 30,
+    fontSize: responsiveFontSize(3),
   },
 });
 

@@ -8,6 +8,7 @@ import {CreateAccountScreen} from '../presentation/screens/auth-screens/CreateAc
 import ForgotPassword from '../presentation/screens/auth-screens/ForgotPassword';
 import OtpVerification from '../presentation/screens/auth-screens/OTPVerification';
 // import {LoadingScreen} from '../presentation/screens/Loaders/MainLoader';
+import {CreatePassword} from '../presentation/screens/auth-screens/CreatePassword';
 const Stack = createStackNavigator<RootStackParamList>();
 
 export const AuthNavigation = () => {
@@ -30,6 +31,7 @@ export const AuthNavigation = () => {
       <Stack.Screen name="CreateAccount" component={CreateAccountScreen} />
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       <Stack.Screen name="OTPVerification" component={OtpVerification} />
+      <Stack.Screen name="CreatePassword" component={CreatePassword} />
     </Stack.Navigator>
   );
 };

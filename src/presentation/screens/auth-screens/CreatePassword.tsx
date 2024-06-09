@@ -1,27 +1,22 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   View,
+  KeyboardAvoidingView,
   StyleSheet,
+  Platform,
   TouchableOpacity,
   Image,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  Dimensions,
   useWindowDimensions,
 } from 'react-native';
 import {Button, Text} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
-  authGlobalStyles,
-  colors,
-  globalStyles,
-} from '../../theme/authGlobalStyles';
-import {
   responsiveHeight,
   responsiveWidth,
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
+import {globalStyles, colors} from '../../theme/authGlobalStyles';
+import RememberMeView from '../../components/RemembermeView';
 import {RootNavigationProp} from '../../../types/navigationTypes';
 import CustomInput from '../../components/CustomTextInput';
 import CustomButton from '../../components/CustomButton';
@@ -30,36 +25,25 @@ type Props = {
   navigation: RootNavigationProp;
 };
 
-const ForgotPasswordScreen: React.FC<Props> = ({navigation}) => {
-  const [email, setEmail] = useState('');
-  const [smallDevice, setSmallDevice] = useState<boolean>(false);
+export const CreatePassword: React.FC<Props> = ({navigation}) => {
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [passwordError, setPasswordError] = useState<string>('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState<string>('');
 
   const {width, height} = useWindowDimensions();
-
-  useEffect(() => {
-    if (Dimensions.get('window').width < 412) {
-      setSmallDevice(true);
-    }
-  }, []);
-
-  console.log(smallDevice);
-
-  const handleSendResetLink = () => {
-    // Lógica para enviar el enlace de restablecimiento de contraseña
-  };
-
-  const handleGoBack = () => {
-    navigation.goBack();
-  };
   const handleGoToHome = () => {
+    navigation.navigate('Home');
+  };
+  const handleLogin = () => {
     navigation.navigate('Home');
   };
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={[styles.container, {flex: 1}]}
-      keyboardVerticalOffset={30}>
+      behavior={Platform.OS === 'ios' ? 'position' : 'height'}
+      style={{...styles.container, height: height, width: width}}
+      keyboardVerticalOffset={50}>
       <View style={{flex: 1, width: '100%', height: '100%'}}>
         <View
           style={{
@@ -73,7 +57,7 @@ const ForgotPasswordScreen: React.FC<Props> = ({navigation}) => {
             style={{
               ...globalStyles.btnBack,
             }}
-            onPress={handleGoBack}>
+            onPress={handleGoToHome}>
             <Icon
               style={{color: colors.primary}}
               name="arrow-left-top"
@@ -113,7 +97,6 @@ const ForgotPasswordScreen: React.FC<Props> = ({navigation}) => {
               alignItems: 'center',
               justifyContent: 'center',
               gap: 8,
-              marginBottom: responsiveHeight(1),
             }}>
             <Text
               variant="headlineMedium"
@@ -121,7 +104,7 @@ const ForgotPasswordScreen: React.FC<Props> = ({navigation}) => {
                 globalStyles.textColor,
                 {fontSize: responsiveFontSize(2.5)},
               ]}>
-              ¿Olvidaste tu contraseña?
+              Crear contraseña
             </Text>
             <Icon
               style={[{color: colors.primary}]}
@@ -135,18 +118,29 @@ const ForgotPasswordScreen: React.FC<Props> = ({navigation}) => {
               globalStyles.subText,
               {textAlign: 'center', marginBottom: responsiveHeight(3)},
             ]}>
-            Ingresa tu correo electrónico para restablecer tu contraseña
+            Por favor, complete los campos de abajo
           </Text>
           <CustomInput
-            label="Correo Electrónico"
-            placeholder="Ingresa tu correo"
-            value={email}
-            onChangeText={text => setEmail(text)}
-            iconName="email-outline"
+            placeholder="Ingresa tu contraseña"
+            label="Contraseña"
+            iconName="lock-outline"
+            value={password}
+            onChangeText={text => setPassword(text)}
+            secureTextEntry={true}
+            keyboardType="default"
+          />
+          <CustomInput
+            placeholder="Confirma tu contraseña"
+            label="Confirmar Contraseña"
+            iconName="lock-outline"
+            value={confirmPassword}
+            onChangeText={text => setConfirmPassword(text)}
+            secureTextEntry={true}
+            keyboardType="default"
           />
           <View
             style={{
-              marginTop: responsiveHeight(2),
+              flex: 1,
               flexDirection: 'column',
               justifyContent: 'center',
               alignContent: 'center',
@@ -157,7 +151,7 @@ const ForgotPasswordScreen: React.FC<Props> = ({navigation}) => {
             <CustomButton
               iconName="account-plus"
               text="Crear Cuenta"
-              onPress={handleGoToHome}
+              onPress={handleLogin}
               mode="contained"
             />
           </View>
@@ -170,28 +164,33 @@ const ForgotPasswordScreen: React.FC<Props> = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 24,
-    paddingVertical: 32,
+    paddingHorizontal: responsiveWidth(6),
+    paddingVertical: responsiveHeight(4),
   },
-  responsiveContainer: {
+  scrollView: {
     flex: 1,
     width: '100%',
     height: '100%',
-    position: 'relative',
-  },
-  responsiveHeader: {
-    width: '100%',
-    height: '10%',
-    alignItems: 'flex-start',
+    backgroundColor: 'red',
+    alignContent: 'center',
     justifyContent: 'center',
-    zIndex: 10,
   },
-  responsiveContent: {
+  content: {
+    flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-start',
     width: '100%',
-    height: '90%',
+  },
+  form: {
+    width: '100%',
+    alignItems: 'center',
+  },
+  textInput: {
+    height: responsiveHeight(5),
+    borderColor: 'gray',
+    borderWidth: 1,
+    width: '100%',
+    marginBottom: responsiveHeight(2),
+    paddingHorizontal: responsiveWidth(2.5),
   },
 });
-export default ForgotPasswordScreen;

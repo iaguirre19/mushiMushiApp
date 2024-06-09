@@ -15,6 +15,7 @@ export type RootStackParamList = {
   Login: undefined;
   CreateAccount: undefined;
   OTPVerification: undefined;
+  CreatePassword: undefined;
 };
 
 export type RootNavigationProp = StackNavigationProp<RootStackParamList>;

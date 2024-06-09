@@ -1,14 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  TextInput,
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-} from 'react-native';
+import {View, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {colors} from '../theme/authGlobalStyles';
+import {
+  responsiveHeight,
+  responsiveWidth,
+  responsiveFontSize,
+} from 'react-native-responsive-dimensions';
 
 interface CustomInputProps {
   label: string;
@@ -31,25 +30,20 @@ const CustomInput: React.FC<CustomInputProps> = ({
 }) => {
   const [isPasswordVisible, setPasswordVisible] = useState(secureTextEntry);
   const [isFocused, setIsFocused] = useState(false);
-  const [smallDevice, setSmallDevice] = useState(false);
-
-  useEffect(() => {
-    if (Dimensions.get('window').width < 412) {
-      setSmallDevice(true);
-    }
-  }, []);
 
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
       <View
         style={[styles.inputContainer, isFocused && {borderColor: 'orange'}]}>
-        <Icon name={iconName} size={20} color="gray" style={styles.icon} />
+        <Icon
+          name={iconName}
+          size={responsiveFontSize(2.5)}
+          color="gray"
+          style={styles.icon}
+        />
         <TextInput
-          style={[
-            styles.input,
-            {height: smallDevice ? 45 : 50, fontSize: smallDevice ? 16 : 20},
-          ]}
+          style={[styles.input]}
           value={value}
           onChangeText={onChangeText}
           placeholder={placeholder}
@@ -67,7 +61,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
             style={styles.icon}>
             <Icon
               name={isPasswordVisible ? 'eye-off' : 'eye'}
-              size={20}
+              size={responsiveFontSize(2.5)}
               color="gray"
             />
           </TouchableOpacity>
@@ -79,30 +73,31 @@ const CustomInput: React.FC<CustomInputProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 8,
+    marginBottom: responsiveHeight(2.4),
     width: '100%',
   },
   label: {
-    fontSize: 16,
-    marginBottom: 4,
+    fontSize: responsiveFontSize(2),
+    marginBottom: responsiveHeight(1.2),
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
     borderColor: 'gray',
-    borderRadius: 12,
+    borderRadius: responsiveWidth(3),
     backgroundColor: 'white',
-    paddingHorizontal: 8,
+    paddingHorizontal: responsiveWidth(2),
   },
   icon: {
-    marginRight: 8,
+    marginRight: responsiveWidth(2),
     color: colors.primary,
   },
   input: {
     flex: 1,
-    paddingVertical: 0,
+    paddingVertical: responsiveHeight(1),
     paddingHorizontal: 0,
+    fontSize: responsiveFontSize(2),
   },
 });
 

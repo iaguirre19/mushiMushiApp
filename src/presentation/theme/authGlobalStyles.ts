@@ -1,4 +1,9 @@
 import {Platform, StyleSheet} from 'react-native';
+import {
+  responsiveHeight,
+  responsiveWidth,
+  responsiveFontSize,
+} from 'react-native-responsive-dimensions';
 
 export const colors = {
   primary: '#dc6c1c',
@@ -27,7 +32,7 @@ export const authGlobalStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    height: '60%',
+    height: '50%',
     backgroundColor: colors.primary,
     borderBottomEndRadius: 140,
   },
@@ -70,39 +75,40 @@ export const authGlobalStyles = StyleSheet.create({
   },
 });
 
-export const globalStyles = StyleSheet.create({
+export const globalStyles = StyleSheet.create<any>({
   mainContainer: {
     flex: 1,
     width: '100%',
     height: '100%',
-    paddingHorizontal: 32,
+    paddingHorizontal: responsiveWidth(8),
     justifyContent: 'flex-start',
   },
   containerInput: {
     flex: 1,
     justifyContent: 'center',
-    paddingHorizontal: 32,
+    paddingHorizontal: responsiveWidth(8),
     backgroundColor: '#fff',
-    rowGap: 28,
+    rowGap: responsiveHeight(3.5),
   },
   inputContainer: {
-    marginVertical: 8,
+    marginVertical: responsiveHeight(1),
   },
   input: {
     backgroundColor: 'transparent',
-    borderRadius: 30,
+    borderRadius: responsiveHeight(3),
   },
   button: {
-    marginBottom: 16,
-    backgroundColor: '#6200ee',
+    marginBottom: responsiveHeight(2),
+    backgroundColor: colors.tertiary,
   },
   icon: {
     alignSelf: 'center',
-    marginBottom: 32,
+    marginBottom: responsiveHeight(5),
   },
   registerText: {
     textAlign: 'center',
-    color: colors.tertiary,
+    color: colors.subTextColor,
+    fontSize: responsiveFontSize(1.8),
   },
   textColor: {
     color: '#000',
@@ -116,26 +122,26 @@ export const globalStyles = StyleSheet.create({
   btnContainer: {
     flex: 1,
     flexDirection: 'column',
-    rowGap: 20,
+    rowGap: responsiveHeight(2),
   },
   subText: {
     color: colors.subTextColor,
+    textAlign: 'center',
   },
   btnBack: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 50,
-    height: 50,
+    width: responsiveWidth(12),
+    height: responsiveWidth(12),
     borderColor: '#eee',
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: responsiveWidth(2),
   },
   inner: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 28,
-    // backgroundColor: 'blue',
+    padding: responsiveHeight(4),
   },
   header: {
     flex: 1,
@@ -154,8 +160,6 @@ export const globalStyles = StyleSheet.create({
     justifyContent: 'center',
   },
   orangeLogo: {
-    width: 800,
-    // height: 390,
     resizeMode: 'contain',
     borderColor: '#eee',
     borderWidth: 0,
