@@ -33,8 +33,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
         isOutlined && styles.outlinedButton,
         mode === 'text' && styles.textButton,
       ]}
-      activeOpacity={0.9} // Ajuste para un efecto de clic más suave
-    >
+      activeOpacity={0.9}>
       <View style={styles.iconWrapper}>
         <Icon
           name={iconName}
@@ -61,6 +60,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
 const styles = StyleSheet.create({
   button: {
     width: '100%',
+    height: responsiveHeight(5),
     alignSelf: 'center',
     justifyContent: 'center',
     paddingVertical: responsiveHeight(1.2),

@@ -8,7 +8,7 @@ import {
   Image,
   useWindowDimensions,
 } from 'react-native';
-import {Button, Text} from 'react-native-paper';
+import {Text} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   responsiveHeight,
@@ -16,20 +16,30 @@ import {
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
 import {globalStyles, colors} from '../../theme/authGlobalStyles';
-import RememberMeView from '../../components/RemembermeView';
 import {RootNavigationProp} from '../../../types/navigationTypes';
-import CustomInput from '../../components/CustomTextInput';
 import CustomButton from '../../components/CustomButton';
+import {Controller, useForm} from 'react-hook-form';
+import TextInputWithIcon from '../../components/TextInputWithIcon';
+import IconM from 'react-native-vector-icons/MaterialCommunityIcons';
+import BackBtn from '../../components/BackBtn';
 
 type Props = {
   navigation: RootNavigationProp;
 };
 
+interface PasswordData {
+  password: string;
+  confirmPassword: string;
+}
+
 export const CreatePassword: React.FC<Props> = ({navigation}) => {
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm<PasswordData>();
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
-  const [passwordError, setPasswordError] = useState<string>('');
-  const [confirmPasswordError, setConfirmPasswordError] = useState<string>('');
 
   const {width, height} = useWindowDimensions();
   const handleGoToHome = () => {
@@ -53,17 +63,7 @@ export const CreatePassword: React.FC<Props> = ({navigation}) => {
             justifyContent: 'center',
             zIndex: 10,
           }}>
-          <TouchableOpacity
-            style={{
-              ...globalStyles.btnBack,
-            }}
-            onPress={handleGoToHome}>
-            <Icon
-              style={{color: colors.primary}}
-              name="arrow-left-top"
-              size={responsiveFontSize(3)}
-            />
-          </TouchableOpacity>
+          <BackBtn navigation={navigation} />
         </View>
         <View
           style={{
@@ -86,8 +86,8 @@ export const CreatePassword: React.FC<Props> = ({navigation}) => {
               source={require('../../../assets/img/logo-naranja.png')}
               style={{
                 ...globalStyles.orangeLogo,
-                width: responsiveWidth(80),
-                height: responsiveHeight(40),
+                width: responsiveWidth(140),
+                height: responsiveHeight(90),
               }}
             />
           </View>
@@ -120,23 +120,59 @@ export const CreatePassword: React.FC<Props> = ({navigation}) => {
             ]}>
             Por favor, complete los campos de abajo
           </Text>
-          <CustomInput
-            placeholder="Ingresa tu contraseña"
-            label="Contraseña"
-            iconName="lock-outline"
-            value={password}
-            onChangeText={text => setPassword(text)}
-            secureTextEntry={true}
-            keyboardType="default"
+          <Controller
+            control={control}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInputWithIcon
+                label="Ingresa tu contraseña"
+                iconName="lock-outline"
+                placeholder="Ingresa tu contraseña"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                keyboardType="default"
+                secureTextEntry
+                error={errors.password ? errors.password.message : null}
+              />
+            )}
+            name="password"
+            rules={{
+              required: 'Contraseña es requerida.',
+              minLength: {
+                value: 8,
+                message: 'La contraseña debe tener al menos 8 caracteres',
+              },
+            }}
+            defaultValue=""
           />
-          <CustomInput
-            placeholder="Confirma tu contraseña"
-            label="Confirmar Contraseña"
-            iconName="lock-outline"
-            value={confirmPassword}
-            onChangeText={text => setConfirmPassword(text)}
-            secureTextEntry={true}
-            keyboardType="default"
+          <Controller
+            control={control}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInputWithIcon
+                label="Confirma tu contraseña"
+                iconName="lock-outline"
+                placeholder="Confirma tu contraseña"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                keyboardType="default"
+                secureTextEntry
+                error={
+                  errors.confirmPassword ? errors.confirmPassword.message : null
+                }
+              />
+            )}
+            name="confirmPassword"
+            rules={{
+              required: 'Confirma tu contraseña',
+              minLength: {
+                value: 8,
+                message: 'La contraseña debe tener al menos 8 caracteres',
+              },
+              validate: value =>
+                value === password || 'Las contraseñas no coinciden',
+            }}
+            defaultValue=""
           />
           <View
             style={{

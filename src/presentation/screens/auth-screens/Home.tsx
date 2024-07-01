@@ -31,7 +31,7 @@ export const Home: React.FC<Props> = ({navigation}) => {
           source={require('../../../assets/img/logo.png')}
           style={[
             authGlobalStyles.topContentCardImage,
-            {width: responsiveWidth(60), height: responsiveHeight(35)},
+            {width: responsiveWidth(70), height: responsiveHeight(45)},
           ]}
         />
       </View>
@@ -51,9 +51,9 @@ export const Home: React.FC<Props> = ({navigation}) => {
               textAlign: 'center',
               alignContent: 'center',
               justifyContent: 'center',
-              fontSize: responsiveFontSize(2.7),
+              fontSize: responsiveFontSize(3.2),
             }}>
-            Bienvenido a <Text>mushi mushi</Text>{' '}
+            Bienvenido a mushi mushi{' '}
             <Icon
               style={{color: colors.primary}}
               name="creation"

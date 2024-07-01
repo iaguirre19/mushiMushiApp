@@ -32,7 +32,7 @@ export const authGlobalStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    height: '50%',
+    height: '60%',
     backgroundColor: colors.primary,
     borderBottomEndRadius: 140,
   },

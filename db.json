@@ -1,0 +1,118 @@
+{
+  "ping": {
+    "status": "active"
+  },
+  "home": {
+    "status": "active",
+    "message": "Auth Service Go Running",
+    "version": "2.0.0"
+  },
+  "authenticate": [
+    {
+      "id": "90a9",
+      "email": "hola@test.com",
+      "password": "halo678io"
+    }
+  ],
+  "otp": [
+    {
+      "id": 1,
+      "otp": "12345"
+    }
+  ],
+  "authorize": {
+    "Error": false,
+    "Message": "User permissions of 1",
+    "Data": {
+      "id": "1",
+      "user_email": "user@example.com",
+      "user_firstname": "John",
+      "user_lastname": "Doe",
+      "user_password": ""
+    }
+  },
+  "users": [
+    {
+      "id": "1",
+      "user_fullname": "John Doe",
+      "user_email": "user1@example.com"
+    },
+    {
+      "id": "2",
+      "user_email": "user2@example.com",
+      "user_firstname": "Jane",
+      "user_lastname": "Doe",
+      "user_password": ""
+    },
+    {
+      "id": "8960",
+      "email": "testemail@gmail.com",
+      "name": "Iran ricardo Aguirre castaneda"
+    },
+    {
+      "id": "f878",
+      "name": "test nama",
+      "email": "test@mail.com"
+    },
+    {
+      "id": "45c5",
+      "name": "test",
+      "email": "test@mail.com"
+    },
+    {
+      "id": "c534",
+      "name": "test",
+      "email": "test@mail.com"
+    },
+    {
+      "id": "5612",
+      "name": "test",
+      "email": "test@mail.com"
+    },
+    {
+      "id": "1893",
+      "name": "test",
+      "email": "test@mail.com"
+    },
+    {
+      "id": "9a60",
+      "name": "test",
+      "email": "test@mail.com"
+    },
+    {
+      "id": "5704",
+      "name": "test",
+      "email": "test@mail.com"
+    },
+    {
+      "id": "a1fe",
+      "name": "test",
+      "email": "test@mail.com"
+    },
+    {
+      "id": "168c",
+      "name": "test",
+      "email": "test@mail.com"
+    },
+    {
+      "id": "32a1",
+      "name": "test",
+      "email": "test@mail.com"
+    },
+    {
+      "id": "26c4",
+      "name": "test",
+      "email": "test@mail.com"
+    },
+    {
+      "id": "d772",
+      "name": "test",
+      "email": "test@mail.com"
+    },
+    {
+      "id": "cf80",
+      "name": "dfgdsfg",
+      "email": "test@gmail.com"
+    }
+  ]
+}

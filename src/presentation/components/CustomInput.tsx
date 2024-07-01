@@ -12,6 +12,8 @@ interface CustomInputProps {
   secureTextEntry?: boolean;
   icon?: string;
   password?: boolean;
+  onBlur?: () => void;
+  error?: string;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -22,6 +24,8 @@ const CustomInput: React.FC<CustomInputProps> = ({
   secureTextEntry = false,
   icon = 'account',
   password = false,
+  onBlur,
+  error,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -56,7 +60,10 @@ const CustomInput: React.FC<CustomInputProps> = ({
         }
         secureTextEntry={password ? !passwordVisible : secureTextEntry}
         onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
+        onBlur={() => {
+          setIsFocused(false);
+          onBlur?.();
+        }}
         theme={{
           colors: {
             text: globalStyles.textColor.color,
@@ -65,7 +72,9 @@ const CustomInput: React.FC<CustomInputProps> = ({
           },
           roundness: 12,
         }}
+        error={!!error}
       />
+      {error && <Text style={styles.errorText}>{error}</Text>}{' '}
     </View>
   );
 };
@@ -82,6 +91,10 @@ const styles = StyleSheet.create({
   input: {
     height: 50,
     backgroundColor: 'white',
+  },
+  errorText: {
+    color: 'red',
+    marginTop: 5,
   },
 });
 

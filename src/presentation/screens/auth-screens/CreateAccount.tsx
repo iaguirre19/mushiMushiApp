@@ -7,29 +7,57 @@ import {
   View,
   useWindowDimensions,
   StyleSheet,
+  Keyboard,
 } from 'react-native';
-import {Text, Button} from 'react-native-paper';
+import {Text} from 'react-native-paper';
 import {colors, globalStyles} from '../../theme/authGlobalStyles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {RootNavigationProp} from '../../../types/navigationTypes';
-import CustomInput from '../../components/CustomTextInput';
 import {
   responsiveHeight,
   responsiveWidth,
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
 import CustomButton from '../../components/CustomButton';
+import {useForm, Controller} from 'react-hook-form';
+import {createUser} from '../../../api/api';
+import TextInputWithIcon from '../../components/TextInputWithIcon';
+import BackBtn from '../../components/BackBtn';
 
 type Props = {
   navigation: RootNavigationProp;
 };
 
+interface FormData {
+  name: string;
+  email: string;
+}
+
 export const CreateAccountScreen: React.FC<Props> = ({navigation}) => {
   const {width, height} = useWindowDimensions();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm<FormData>();
+  const [error, setError] = useState<string | null>(null);
+
+  const onSubmit = async (data: FormData) => {
+    try {
+      Keyboard.dismiss();
+      const response = await createUser(data);
+      if (response) {
+        setTimeout(() => {
+          navigation.navigate('OTPVerification');
+        }, 1000);
+      } else {
+        setError('Usuario o contraseña incorrectos, intenta de nuevo');
+      }
+    } catch (error) {
+      console.log(error);
+      setError('Usuario o contraseña incorrectos, intenta de nuevo');
+    }
+  };
 
   const handleGoToHome = () => {
     navigation.navigate('Home');
@@ -38,10 +66,7 @@ export const CreateAccountScreen: React.FC<Props> = ({navigation}) => {
     navigation.navigate('Login');
   };
 
-  const handleGoOTP = () => {
-    navigation.navigate('OTPVerification');
-  };
-
+  const handleGoOTP = () => navigation.navigate('OTPVerification');
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'position' : 'height'}
@@ -61,17 +86,7 @@ export const CreateAccountScreen: React.FC<Props> = ({navigation}) => {
             justifyContent: 'center',
             zIndex: 10,
           }}>
-          <TouchableOpacity
-            style={{
-              ...globalStyles.btnBack,
-            }}
-            onPress={handleGoToHome}>
-            <Icon
-              style={{color: colors.primary}}
-              name="arrow-left-top"
-              size={responsiveFontSize(3)}
-            />
-          </TouchableOpacity>
+          <BackBtn navigation={navigation} />
         </View>
         <View
           style={{
@@ -94,7 +109,7 @@ export const CreateAccountScreen: React.FC<Props> = ({navigation}) => {
               source={require('../../../assets/img/logo-naranja.png')}
               style={{
                 ...globalStyles.orangeLogo,
-                width: responsiveWidth(90),
+                width: responsiveWidth(140),
                 height: responsiveHeight(90),
               }}
             />
@@ -132,23 +147,49 @@ export const CreateAccountScreen: React.FC<Props> = ({navigation}) => {
             ]}>
             Por favor, complete los campos de abajo
           </Text>
-          <CustomInput
-            placeholder="Ingresa tu nombre"
-            label="Nombre"
-            iconName="account"
-            value={name}
-            onChangeText={text => setName(text)}
-            secureTextEntry={false}
-            keyboardType="default"
+          <Controller
+            control={control}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInputWithIcon
+                label="Ingresa tu nombre completo"
+                iconName="account-outline"
+                placeholder="Ingresa tu nombre"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                keyboardType="default"
+                error={errors.name ? errors.name.message : null}
+              />
+            )}
+            name="name"
+            rules={{
+              required: 'Nombre es requerido.',
+            }}
+            defaultValue=""
           />
-          <CustomInput
-            placeholder="Ingresa tu email"
-            label="Email"
-            iconName="email-outline"
-            value={email}
-            onChangeText={text => setEmail(text)}
-            secureTextEntry={false}
-            keyboardType="email-address"
+          <Controller
+            control={control}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInputWithIcon
+                label="Correo Electrónico"
+                iconName="email-outline"
+                placeholder="Ingresa tu correo"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                keyboardType="email-address"
+                error={errors.email ? errors.email.message : null}
+              />
+            )}
+            name="email"
+            rules={{
+              required: 'Email es requerido.',
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: 'Formato de correo electrónico inválido',
+              },
+            }}
+            defaultValue=""
           />
           <View
             style={{
@@ -163,7 +204,8 @@ export const CreateAccountScreen: React.FC<Props> = ({navigation}) => {
             <CustomButton
               iconName="account-plus"
               text="Crear cuenta"
-              onPress={handleGoOTP}
+              // onPress={handleSubmit(onSubmit)}
+              onPress={() => navigation.navigate('OTPVerification')}
               mode="contained"
             />
           </View>

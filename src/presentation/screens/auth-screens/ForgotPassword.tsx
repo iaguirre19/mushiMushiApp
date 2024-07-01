@@ -6,17 +6,12 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
   Dimensions,
   useWindowDimensions,
 } from 'react-native';
 import {Button, Text} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {
-  authGlobalStyles,
-  colors,
-  globalStyles,
-} from '../../theme/authGlobalStyles';
+import {colors, globalStyles} from '../../theme/authGlobalStyles';
 import {
   responsiveHeight,
   responsiveWidth,
@@ -25,28 +20,28 @@ import {
 import {RootNavigationProp} from '../../../types/navigationTypes';
 import CustomInput from '../../components/CustomTextInput';
 import CustomButton from '../../components/CustomButton';
+import BackBtn from '../../components/BackBtn';
+import {Controller, useForm} from 'react-hook-form';
+import TextInputWithIcon from '../../components/TextInputWithIcon';
 
 type Props = {
   navigation: RootNavigationProp;
 };
 
-const ForgotPasswordScreen: React.FC<Props> = ({navigation}) => {
-  const [email, setEmail] = useState('');
-  const [smallDevice, setSmallDevice] = useState<boolean>(false);
+interface PasswordData {
+  email: string;
+}
 
+const ForgotPasswordScreen: React.FC<Props> = ({navigation}) => {
   const {width, height} = useWindowDimensions();
 
-  useEffect(() => {
-    if (Dimensions.get('window').width < 412) {
-      setSmallDevice(true);
-    }
-  }, []);
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm<PasswordData>();
 
-  console.log(smallDevice);
-
-  const handleSendResetLink = () => {
-    // Lógica para enviar el enlace de restablecimiento de contraseña
-  };
+  const handleSendResetLink = () => {};
 
   const handleGoBack = () => {
     navigation.goBack();
@@ -69,17 +64,7 @@ const ForgotPasswordScreen: React.FC<Props> = ({navigation}) => {
             justifyContent: 'center',
             zIndex: 10,
           }}>
-          <TouchableOpacity
-            style={{
-              ...globalStyles.btnBack,
-            }}
-            onPress={handleGoBack}>
-            <Icon
-              style={{color: colors.primary}}
-              name="arrow-left-top"
-              size={responsiveFontSize(3)}
-            />
-          </TouchableOpacity>
+          <BackBtn navigation={navigation} />
         </View>
         <View
           style={{
@@ -102,8 +87,8 @@ const ForgotPasswordScreen: React.FC<Props> = ({navigation}) => {
               source={require('../../../assets/img/logo-naranja.png')}
               style={{
                 ...globalStyles.orangeLogo,
-                width: responsiveWidth(80),
-                height: responsiveHeight(40),
+                width: responsiveWidth(150),
+                height: responsiveHeight(90),
               }}
             />
           </View>
@@ -137,13 +122,32 @@ const ForgotPasswordScreen: React.FC<Props> = ({navigation}) => {
             ]}>
             Ingresa tu correo electrónico para restablecer tu contraseña
           </Text>
-          <CustomInput
-            label="Correo Electrónico"
-            placeholder="Ingresa tu correo"
-            value={email}
-            onChangeText={text => setEmail(text)}
-            iconName="email-outline"
+          <Controller
+            control={control}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextInputWithIcon
+                label="Ingresa tu correo electrónico"
+                iconName="email-outline"
+                placeholder="Ingresa tu correo electrónico"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                keyboardType="default"
+                secureTextEntry
+                error={errors.email ? errors.email.message : null}
+              />
+            )}
+            name="email"
+            rules={{
+              required: 'Correo es requerido.',
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: 'Correo no válido',
+              },
+            }}
+            defaultValue=""
           />
+
           <View
             style={{
               marginTop: responsiveHeight(2),

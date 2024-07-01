@@ -1,25 +1,25 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   StyleSheet,
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
-  Dimensions,
   useWindowDimensions,
+  Keyboard,
 } from 'react-native';
 import {
   responsiveHeight,
   responsiveWidth,
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
-import {Button, Text, TextInput} from 'react-native-paper';
+import {Button, Text, TextInput as PaperTextInput} from 'react-native-paper';
 import IconM from 'react-native-vector-icons/MaterialCommunityIcons';
 import {colors, globalStyles} from '../../theme/authGlobalStyles';
 import {RootNavigationProp} from '../../../types/navigationTypes';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomButton from '../../components/CustomButton';
+import {verifyOtp} from '../../../api/api';
+import BackBtn from '../../components/BackBtn';
 
 type Props = {
   navigation: RootNavigationProp;
@@ -31,8 +31,10 @@ const OtpVerification: React.FC<Props> = ({navigation}) => {
   const numberButtons = [1, 2, 3, 4, 5, 6, 7, 8, 9, '#', 0, 'delete'];
   const [timer, setTimer] = useState<number>(60);
   const [isResendDisabled, setIsResendDisabled] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   const {width, height} = useWindowDimensions();
+
   useEffect(() => {
     if (timer > 0) {
       const interval = setInterval(() => {
@@ -75,6 +77,32 @@ const OtpVerification: React.FC<Props> = ({navigation}) => {
     }
   };
 
+  const handleResendOtp = () => {
+    setTimer(60);
+    setIsResendDisabled(true);
+  };
+
+  const handleVerifyOtp = async () => {
+    const otpString = otp.join('');
+    try {
+      const response = await verifyOtp(otpString);
+      if (response.success) {
+        navigation.navigate('CreatePassword');
+      } else {
+        setError(response.message);
+        setTimeout(() => {
+          setError(null);
+        }, 5000); // Ocultar el mensaje de error después de 5 segundos
+      }
+    } catch (error) {
+      console.log('Error en verifyOtp:', error);
+      setError('Error verificando el OTP, intenta de nuevo');
+      setTimeout(() => {
+        setError(null);
+      }, 5000); // Ocultar el mensaje de error después de 5 segundos
+    }
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'position' : 'height'}
@@ -87,17 +115,7 @@ const OtpVerification: React.FC<Props> = ({navigation}) => {
           height: '100%',
         }}>
         <View style={styles.responsiveHeader}>
-          <TouchableOpacity
-            style={globalStyles.btnBack}
-            onPress={() => {
-              navigation.goBack();
-            }}>
-            <IconM
-              style={{color: colors.primary}}
-              name="arrow-left-top"
-              size={26}
-            />
-          </TouchableOpacity>
+          <BackBtn navigation={navigation} />
         </View>
         <View
           style={{
@@ -123,7 +141,7 @@ const OtpVerification: React.FC<Props> = ({navigation}) => {
           </View>
           <View style={styles.otpContainer}>
             {otp.map((digit = '', index) => (
-              <TextInput
+              <PaperTextInput
                 key={index}
                 style={[
                   styles.otpInput,
@@ -134,12 +152,18 @@ const OtpVerification: React.FC<Props> = ({navigation}) => {
                 keyboardType="number-pad"
                 underlineColor="transparent"
                 activeUnderlineColor="transparent"
+                editable={false}
+                onFocus={() => Keyboard.dismiss()}
               />
             ))}
           </View>
+          {error && <Text style={{color: 'red'}}>{error}</Text>}
           <View style={styles.timerContainer}>
             <Text style={styles.timerText}>Resend code in {timer} seconds</Text>
-            <Button mode="text" disabled={isResendDisabled}>
+            <Button
+              mode="text"
+              disabled={isResendDisabled}
+              onPress={handleResendOtp}>
               Resend Code
             </Button>
           </View>
@@ -147,10 +171,7 @@ const OtpVerification: React.FC<Props> = ({navigation}) => {
             <CustomButton
               iconName="check"
               text="Verificar Codigo"
-              onPress={() => {
-                /* Add OTP verification functionality */
-                navigation.navigate('CreatePassword');
-              }}
+              onPress={handleVerifyOtp}
               mode="contained"
             />
           </View>
